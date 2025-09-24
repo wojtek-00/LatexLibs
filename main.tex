@@ -1,25 +1,28 @@
 \documentclass[12pt,oneside]{book}
 
-\usepackage{libs/framework}
+
+% Config includes
+\include{libs/framework}
+\include{libs/tcbStyles}
+\include{libs/lstStyles}
+
+
 
 % Page Settings
 \geometry{a4paper, margin=2.5cm}
 \onehalfspacing
 
-
-
 % ----------------- DOKUMENT -----------------
 \begin{document}
-\input{general/titlePage}
-
-% Table of contents
-\tableofcontents
-\clearpage
+	\input{general/titlePage}
+	
+	% Table of contents
+	\tableofcontents
+	\clearpage
 
 % ----------------- CHAPTERS -----------------
 \chapter{ChapterExample}
-\input{contents/01-template}
-
+	\input{contents/01-template}
 
 
 
