@@ -1,0 +1,605 @@
+% filename.....
+% !TeX root = ../main.tex
+%%%%%
+
+\section{Relationsale Algebra}
+
+Relationale Algebra to zbiór operacji, które przyjmują jedną lub więcej relacji (tabel) jako dane wejściowe i zwracają nową relację jako wynik.
+Wszystko w niej opiera się na zbiorach i operacjach matematycznych.
+
+
+\vspace{0.5cm}
+Die wichtigste operationen:
+\begin{table}[H]
+\centering
+\caption{Wichtige Operationen der Relationalen Algebra}
+\begin{tabularx}{\textwidth}{|l|c|X|}
+\hline
+\textbf{Operation} & \textbf{Symbol} & \textbf{Beschreibung} \\
+\hline
+Selektion & $\sigma$ & Wählt Tupel aus, die eine gegebene Bedingung erfüllen. \\
+\hline
+Projektion & $\pi$ & Wählt bestimmte Attribute (Spalten) einer Relation aus. \\
+\hline
+Vereinigung & $\cup$ & Kombiniert die Tupel zweier Relationen mit gleicher Struktur (wie \texttt{UNION} in SQL). \\
+\hline
+Differenz & $-$ & Liefert die Tupel, die in der ersten, aber nicht in der zweiten Relation vorkommen. \\
+\hline
+Kartesisches Produkt & $\times$ & Bildet alle möglichen Kombinationen von Tupeln aus zwei Relationen. \\
+\hline
+Join (Verbund) & $\bowtie$ & Verknüpft zwei Relationen über gleiche Attribute oder Bedingungen. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Relationen}
+Eine Relation R (Tabelle) ist eine Teilmenge des Kreuzproduktes $Att_1 \times ... \times Att_n$. Dies wird $R \subseteq Att_1 \times ... \times Att_n$ geschrieben.
+
+\begin{tcolorbox}[red, title={Hinweis}]
+	Relacja to mattematyczny model tabeli w relacynej bazie danych. Jest to zbiór tuples, które mają taką samą struktórę atrybutów:\\
+    $R \subseteq Att_1 \times ... \times Att_n$\\
+
+    gdzie:
+    \begin{enumerate}[label={}, leftmargin=15pt, itemsep=0pt, topsep=0pt]
+        \item R - nazwa relacji (np. Student)
+        \item $A_1, A_2, ..., A_n$ nazy atrybutów(Matrikellnummer, Name, Fachrichtung).
+    \end{enumerate}
+\end{tcolorbox}
+
+\subsection{Vereinigungsverträglichkeit}
+2 Relationen sind Vereinigungsverträglich, wenn sie:
+\begin{enumerate}
+    \item denselben Anzahl an Attributen haben
+    \item die entsprechenden Attribute $A_i$ in R und $B_i$ in S denselben Datentyp oder einen gemeinsamen Obertyp besitzen.
+\end{enumerate}
+
+
+
+\begin{tcolorbox}[red, title={Hinweis}]
+    \begin{align*}
+        R&\subseteq Att_1 \times \dots \times Att_n\\
+        S&\subseteq Btt_1 \times \dots \times Btt_n\\
+        &mit Typ(A_i) = Typ(B_i)
+    \end{align*}
+\end{tcolorbox}
+
+\subsubsection{Beispiel}
+\begin{table}[H]
+\centering
+\caption{Beispiel: Vereinigungsverträgliche Relationen}
+\begin{minipage}{0.3\textwidth}
+\centering
+\textbf{Relation R} \\[3pt]
+\begin{tabularx}{\linewidth}{|X|X|}
+\hline
+Matr-nummer & Name \\
+\hline
+101 & Anna \\
+102 & Ben \\
+\hline
+\end{tabularx}
+\end{minipage}
+\hfill
+\begin{minipage}{0.3\textwidth}
+\centering
+\textbf{Relation S} \\[3pt]
+\begin{tabularx}{\linewidth}{|X|X|}
+\hline
+Matr-nummer & Name \\
+\hline
+103 & Carla \\
+104 & David \\
+\hline
+\end{tabularx}
+\end{minipage}
+\hfill
+\begin{minipage}{0.3\textwidth}
+\centering
+\textbf{Relation C} \\[3pt]
+\begin{tabularx}{\linewidth}{|X|X|}
+\hline
+Name & Alter \\
+\hline
+Anna & 21 \\
+Ben & 22 \\
+\hline
+\end{tabularx}
+\end{minipage}
+\end{table}
+
+Die relationen R und S sind verträglich, da Sie in einer tabelle dargestellt werden (verbunden). Die relationen R und C oder S und C sind net kompatibel, da die Attribute nicht gleich sind (siehe~\autoref{relOperations})
+
+\newpage
+\subsection{Mengenoperationen für Relationen \label{relOperations}}
+Seien R und S vereinigungsverträglich, dann kann man neue Relationen berechnen:
+\begin{enumerate}
+    \item \textbf{Schnittmenge} $R \cap S = \{\, r \mid r \in R \land r \in S \,\}$ - Einträge, die in beiden Relationen vorkommen
+    \item \textbf{Vereiguung} $R \cup S = \{\, r \mid r \in R \lor r \in S \,\}$ - Zusammenfassung aller Einträge der Relationen
+    \item \textbf{Differenz} $R - S = \{\, r \mid r \in R \land r \notin S \,\}$ - Suchen nach EInträgen, die nur in der ersten, aber nicht in der zweiten Relation vorkommen
+\end{enumerate}
+\begin{tcolorbox}[red, title={Hinweis}]
+    Bei Relationen handelt es sich um Mengen, daher keine Zeile kommt doppelt vor!
+\end{tcolorbox}
+
+\subsubsection{Beispiel}
+\begin{table}[H]
+    \centering
+    \begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{VK} \\[3pt]
+    \begin{tabularx}{\linewidth}{|X|X|X|}
+    \hline
+    Verkäufer & Produkt & Käufer \\
+    \hline
+    Meier & Hose & Schmidt \\
+    Müller & Rock & Schmidt \\
+    Meier & Hose & Schulz \\
+    \hline
+    \end{tabularx}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{VK2} \\[3pt]
+    \begin{tabularx}{\linewidth}{|X|X|X|}
+    \hline
+    Verkäufer & Produkt & Käufer \\
+    \hline
+    Müller & Hemd & Schmidt \\
+    Müller & Rock & Schmidt \\
+    Meier & Rock & Schulz \\
+    \hline
+    \end{tabularx}
+    \end{minipage}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{VK $\cup$ VK2} \\[3pt]
+    \begin{tabularx}{\linewidth}{|X|X|X|}
+    \hline
+    Verkäufer & Produkt & Käufer \\
+    \hline
+    Meier & Hose & Schmidt \\
+    Müller & Rock & Schmidt \\
+    Meier & Hose & Schulz \\
+    Müller & Hemd & Schmidt \\
+    Meier & Rock & Schulz \\
+    \hline
+    \end{tabularx}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{VK $\cap$ VK2} \\[3pt]
+    \begin{tabularx}{\linewidth}{|X|X|X|}
+    \hline
+    Verkäufer & Produkt & Käufer \\
+    \hline
+    Müller & Rock & Schmidt \\
+    \hline
+    \end{tabularx}
+    \vspace{12pt} % odstęp pionowy między tabelkami
+
+    \centering
+    \textbf{VK - VK2} \\[3pt]
+    \begin{tabularx}{\linewidth}{|X|X|X|}
+    \hline
+    Verkäufer & Produkt & Käufer \\
+    \hline
+    Meier & Hose & Schmidt \\
+    Meier & Hose & Schulz \\
+    \hline
+    \end{tabularx}
+    \end{minipage}
+\end{table}
+
+\newpage
+\subsection{Projektion}
+Sei $R \subseteq Att_1 \times \dots \times Att_n$ eine Relation und $B_1, \dots, B_j$ verschiedene Attribute aus der Menge $\{Att_1, \dots, Att_n\}$. 
+
+Dann ist die \textbf{Projektion} von $R$ auf $B_1, \dots, B_j$, geschrieben als
+\[
+\text{Proj}(R, [B_1, \dots, B_j]),
+\]
+die Relation, die entsteht, wenn man aus $R$ alle Spalten entfernt, die nicht in $B_1, \dots, B_j$ enthalten sind. 
+
+Die Reihenfolge der Attribute $B_1, \dots, B_j$ bestimmt zugleich die Reihenfolge der Spalten in der Ergebnisrelation.
+
+\begin{tcolorbox}[red, title={Hinweis}]
+    Projekcja służy do wyboru określonych kolumn (atrybutów) z relacji. Odrzuca wszystkie pozostałe atrybuty i często też usuwa duplikaty, ponieważ relacja w matematycznym sensie to zbiór (a zbiór nie zawiera powtórzeń).
+\end{tcolorbox}
+
+\subsubsection{Beispiel}
+
+\begin{table}[H]
+    \centering
+    \begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{$\text{Proj}(VK, [Käufer, Product])$} \\[3pt]
+    \begin{tabularx}{\linewidth}{|X|X|}
+    \hline
+    Käufer & Produkt \\
+    \hline
+    Schmidt & Hose \\
+    Schmidt & Rock \\
+    Schulz & Hose \\
+    \hline
+    \end{tabularx}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{$\text{Proj}(VK, [Verkäufer])$} \\[3pt]
+    \begin{tabular}{|c|}
+    \hline
+    Verkäufer \\
+    \hline
+    Meier \\
+    Müller \\
+    \hline
+    \end{tabular}
+    \vspace{12pt} % odstęp pionowy między tabelkami
+
+    \centering
+    \textbf{$\text{Proj}(VK \cap VK2, [Produkt])$} \\[3pt]
+    \begin{tabular}{|c|}
+    \hline
+    Produkt \\
+    \hline
+    Rock \\
+    \hline
+    \end{tabular}
+    \end{minipage}
+\end{table}
+
+\subsection{Umbennenung (Rename)}
+Sei R eine Relation, dann bezeichnet $Ren(R,\,T)$ eine Relation mit gleichem Inhalt wie R, die T gennant wird. 
+
+\begin{tcolorbox}[red, title={Hinweis}]
+    Tego używa się gdy tabela sama ze sobą musi być zestawiona. Jeśli mamy 2 razy nazwę tej samej tabeli i potem chcemy operowac na Atrybutach tej tabeli to SQL nie wie o ktorą tabekę nam chodzi. Dlatego robimy TAB1 i $Ren(TAB1, TAB2)$ i terazpod TAB1 i TAB2 mamy tą samą tabelę i moeby operowac na jej kolumnach
+\end{tcolorbox}
+
+\subsection{Auswahl (Select)}
+Sei R eine Relation, dann bezeichnet $Sel(R,\, Bed)$ eine Relation, die alle Zeilen aus R beinhaltet, die die Bedingung Bed erfüllen.
+
+\begin{tcolorbox}[blue, title={Syntax}]
+Syntax der Bedingungen $Bed$: $Att_1\ \ OPERATOR\ \ KONSTANTE$
+\begin{itemize}
+    \item OPERATOR - =, <>, <=, >=, <, >
+    \item KONSTANTE - muss ein Wert des zum Attribut gehörenden Datentyps sein. Es kann auch ein Attribut aus anderer Spalte sein - hierbei muss der Typ des Attibunts gleich sein, oder sie müssen einen Gemeinsamen Obertyp besitzen
+\end{itemize}
+\end{tcolorbox}
+
+Es besteht auch die möglichkeit mehrere Bedingungen einzuführen:
+\begin{itemize}
+    \item $Bed_1\ \  AND\ \ Bed_2$ - beide Bedingungen sollen erfüllt sein
+    \item $Bed_1\ \  OR\ \ Bed_2$ - mindenstens eine der Bedingungen soll erfüllt sein
+    \item $NOT\ \ Bed_1$ - die Bedingung soll nicht erfüllt sein
+    \item $(Bed_1)$ - die Bedingung in Klammern werden zuerst ausgewertet
+\end{itemize}
+
+\vspace{0.5cm}
+\subsubsection{Beispiel: Alle Berkäufe, die Meier gemacht hat}
+$Sel(VK,\ VK.Verkäufer = \text{'Meier'})$
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Verkäufer} & \textbf{Produkt} & \textbf{Käufer} \\
+        \hline
+        Meier & Hose & Schmidt \\
+        \hline
+        Meier & Hose & Schluz \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Beispiel: Alle Käufer, die bei Meier gekauft haben}
+$Proj(Sel(VK,\ VK.Verkäufer = \text{'Meier}), [\text{'Käufer'}])$
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|}
+        \hline
+        \textbf{Käufer} \\
+        \hline
+        Schmidt \\
+        \hline
+        Schluz \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Beispiel: Alle Verkäufr, die Meier gemacht hat und die nicht den Kunden Schulz betreffen}
+
+\section{Ein Verknüpfungsoperator für Relationen}
+Bislang beziehen sich operationen auf einzelne Tabellen. Durch das kreuzprodukt können mehrerer, auch verschiedene Tabellen miteinander Verknüpft.
+
+\subsection{Verknüpfung von Tupeln (Konkatenation)}
+Seien \textit{R} und \textit{S} Relationen mit $r = \{r_1, \dots, r_n\} \in R$ und $s = \{s_1, \dots, s_n\} \in S$. Dann ist die Verknüpfung oder Konkatenation von \textit{r} mit \textit{s}, geschrieben $r \circ s$, definiert als $\{r_1, \dots, r_n, s_1, \dots, s_n\}$.
+
+\subsection{Kreuzprodukt}
+Seien \textit{R} und \textit{S} Relationen, dann ist das kreuzprodukt von \textit{R} und \textit{S}, geschrieben $R \times S$, sefiniert durch $R \times S = \{r \circ s | r \in R \text{ und } s \in S\}$
+
+\begin{tcolorbox}[blue, title={Hinweis}]
+   Konkatenacja to operacja na pojedynczych elementach, łączy je w jeden dłuszy element. Kreuzprodukt to operacja na zbiorach elementów, która generuje nową relację, która zawiera wszystkie moliwe kombinacje krotek z $R \text{ i } S$
+   
+\end{tcolorbox}
+
+\begin{tcolorbox}[red, title={Konkatenation vs Kreuzprodukt}]
+Seien 
+\[
+R = \{(a_1), (a_2)\} \quad \text{und} \quad S = \{(b_1), (b_2)\}.
+\]
+
+Dann ist die \textbf{Konkatenation} einzelner Tupel definiert als:
+\[
+(a_1) \circ (b_1) = (a_1, b_1)
+\]
+
+Das \textbf{Kreuzprodukt} der Relationen $R$ und $S$ besteht aus allen möglichen Konkatenationen von Tupeln aus $R$ und $S$:
+\[
+R \times S = \{\, r \circ s \mid r \in R,\, s \in S \,\}
+\]
+
+Konkret ergibt sich hier:
+\[
+R \times S = \{(a_1, b_1), (a_1, b_2), (a_2, b_1), (a_2, b_2)\}
+\]
+\end{tcolorbox}
+
+\subsection{Übung}
+\begin{table}[H]
+    \centering
+    \textbf{Relationen} \\ [10pt]
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Projekt} \\[3pt]
+        \begin{tabularx}{\linewidth}{|X|X|}
+            \hline
+            \textbf{ProNr} & \textbf{Name} \\
+            \hline
+            1. & Schachtel \\
+            \hline
+            2. & Behang \\
+            \hline
+        \end{tabularx}
+    \end{minipage}
+    \hspace{0.3cm}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Aufgabe} \\ [3pt]
+
+        \begin{tabularx}{\linewidth}{|X|X|X|}
+            \hline
+            \textbf{AufNr} & \textbf{Arbeit} & \textbf{ProNr} \\
+            \hline
+            1. & knicken    & 1 \\
+            2. & kleben     & 1 \\
+            3. & knicken    & 2\\
+            4. & färben     & 2 \\
+            \hline
+        \end{tabularx}
+    \end{minipage}
+    \hspace{0.3cm}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Maschine} \\ [3pt]
+
+        \begin{tabularx}{\linewidth}{|X|X|X|}
+            \hline
+            \textbf{Mname} & \textbf{Dater} & \textbf{AufNr} \\
+            \hline
+            M1 & 2    & 1 \\
+            M2 & 3    & 1 \\
+            M1 & 3    & 2\\
+            M3 & 2    & 3 \\
+            M1 & 1    & 4 \\
+            M4 & 3    & 4 \\
+            \hline
+        \end{tabularx}
+    \end{minipage}
+\end{table}
+
+\begin{enumerate}
+    \item Geben Sie die Namen aller möglichen Arbeiten an \\ \[Proj(Aufgabe, [Arbeit])\]
+    \item Geben Sie zu jedem Projektnamen die zugehörigen Arbeiten an. Das Ergebnis ist eine Relation mit den Attributen ,,Name'' und ,,Arbeit''. 
+                \[
+                    \text{Proj}\bigl(
+                    \text{Sel}(Projekt \times Aufgabe,\, Projekt.ProNr = Aufgabe.ProNr),
+                    [\text{Name, Arbeit}]
+                    \bigr)
+                    \]
+            \begin{tcolorbox}[blue, title={Przykład dla Kreuzprodukt $Projekt \times Aufgabe$}]
+                \begin{table}[H]
+                    \centering
+                    \textbf{$Projekt \times Aufgabe$} \\[6pt]
+                    \begin{tabular}{|c|l|c|l|c|}
+                        \hline
+                        \textbf{ProNr} & \textbf{Name} & \textbf{AufNr} & \textbf{Arbeit} & \textbf{ProNr} \\
+                        \hline
+                        1 & Schachtel & 1 & knicken & 1 \\
+                        1 & Schachtel & 2 & kleben  & 1 \\
+                        1 & Schachtel & 3 & knicken & 2 \\
+                        1 & Schachtel & 4 & färben  & 2 \\
+                        2 & Behang    & 1 & knicken & 1 \\
+                        2 & Behang    & 2 & kleben  & 1 \\
+                        2 & Behang    & 3 & knicken & 2 \\
+                        2 & Behang    & 4 & färben  & 2 \\
+                        \hline
+                    \end{tabular}
+                \end{table}
+            \end{tcolorbox}
+    \item Welche Maschinen werden zum Knicken genutzt?
+                \begin{align*}
+                    \text{Proj}\bigl(
+                    \text{Sel}(&Aufgabe \times Maschine,\,
+                    Aufgabe.AufNr = Maschine.AufNr \\
+                    & \text{AND } Aufgabe.Arbeit = \text{'knicken'}),\,
+                    [\text{Mname}]
+                    \bigr)
+                \end{align*}
+
+    \item Geben Sie zu jedem Projektnamen die Maschinen aus, die genutzt werden
+        \begin{align*}
+            \text{Proj}\bigl(
+            \text{Sel}&(Projekt \times Aufgabe \times Maschine, Projekt.ProNr = Aufgabe.ProNr \\ 
+            &\text{ AND } Aufgabe.AufNr = Maschine.AufNr),\, [ProjName, Mname]
+            \bigr)
+        \end{align*}
+
+    \item Geben Sie alle Projekte (deren Namen) aus, bei denen geknickt und gefärbt wird
+        \begin{align*}
+            \text{Proj}\bigl(
+            \text{Sel}&(Projekt \times Aufgabe \times \text{Ren}(Aufgabe, A2),\, 
+            Projekt.ProNr = Aufgabe.ProNr \text{ AND } \\
+            &Projekt.ProNr = A2.ProNr \text{ AND } \\
+            &Aufgabe.Arbeit = \text{'knicken'} \text{ AND } A2.Arbeit = \text{'färben'}),\, 
+            [\text{Name}]
+            \bigr)
+        \end{align*}
+\end{enumerate}
+
+\newpage
+\section{Aufgabenblatt 1}
+\subsection{Aufgabe 1}
+Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich selbst (Self-Join) gebildet werden muss oder wenn zwei Relationen Spalten mit denselben Namen besitzen.
+    \begin{table}[H]
+        \centering
+        \textbf{Aufgaben:} \\ [10pt]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{ProzessNr} & \textbf{Name} & \textbf{VorgängerNr} \\
+            \hline
+            1 & Schneiden   & - \\
+            2 & Waschen     & 1 \\
+            3 & Biegen      & 2 \\
+            4 & Bohren      & 2 \\
+            5 & Malen       & 4\\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    Gib die Aufgaben und deren Vorgänger aus.
+    \begin{align*}
+        \text{Proj}\bigl(
+        \text{Sel}&(Aufgaben \times Ren(Aufgaben, A2),\, Aufgabe.VorgängerNr = A2.ProzessNr),\, \\
+        &\text{[Aufgabe.Name, A2.Name]}
+        \bigr)
+    \end{align*}
+
+\subsection{Aufgabe 2}
+\begin{table}[H]
+    \scriptsize
+    \centering
+    \textbf{Relationen} \\ [10pt]
+    \begin{minipage}[t]{0.2\textwidth}
+        \centering
+        \textbf{Student} \\[3pt]
+        \begin{tabular}{|c|c|}
+            \hline
+            \textbf{MatNr} & \textbf{Name} \\
+            \hline
+            1 & Meier \\
+            2 & Meyer \\
+            3 & Maier \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \hspace{0.2cm}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Gericht} \\ [3pt]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{GNr} & \textbf{Name} & \textbf{Art} \\
+            \hline
+            1 & Pizza            & Haupt \\
+            2 & TomatenSuppe     & Vor \\
+            3 & Schnitzel        & Haupt \\
+            4 & Reis             & Beilage \\
+            5 & Pudding          & Nach \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \hspace{0.2cm}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Bewertung} \\ [3pt]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{MatrNr} & \textbf{GNr} & \textbf{Sterne} \\
+            \hline
+            1 & 2    & 3 \\
+            1 & 4    & 2 \\
+            2 & 1    & 4\\
+            3 & 3    & 3 \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+\begin{enumerate}
+    \item Geben Sie alle Arten von Gerichten aus.
+        \begin{align*}
+            \text{Proj}(Gericht,\, \text{[Art]})
+        \end{align*}
+
+    \item Geben Sie die Namen aller Hauptgerichte (mit der Art „Haupt“) aus.
+        \begin{align*}
+            \text{Proj}\bigl(
+            \text{Sel}(Gericht,\,[Art=\text{'Haupt'}]),\, \text{[Name]}
+            \bigr)
+        \end{align*}
+
+    \item Geben Sie eine Liste aller einzelnen Bewertungen aus (Ausgabe: Name des Gerichts, Sterne).
+        \begin{align*}
+            \text{Proj}\bigl(
+            \text{Sel}(Gericht \times Bewertung,\, Gericht.GNr = Bewertung.GNr),\, \text{[Name, Sterne]}
+            \bigr)
+        \end{align*}
+
+    \item Geben Sie die Namen aller Gerichte aus, die der Student Meier bewertet hat.
+        \begin{align*}
+            \text{Proj}\bigl(&
+            \text{Sel}(Student \times Gericht \times Bewertung,\, Student.MatNr = Bewertung.MatNr \\
+            &\text{ AND } Bewertung.GNr = Gericht.GNr \text{ AND } Student.Name=\text{'Meier'}),\, \\
+            &\text{[Gericht.Name]}
+            \bigr)
+        \end{align*}
+
+    \item Geben Sie alle Bewertungen aus (Name Student, Name Gericht, Sterne), die mindestens vier Sterne haben.
+        \begin{align*}
+            \text{Proj}&\bigl(
+            \text{Sel}(Student \times Gericht \times Bewertung,\, Student.MatNr=Bewertung.MatrNr \text{ AND }\\
+            &Bewertung.GNr=Gericht.GNr \text{ AND } Bewertung.Sterne\text{ > } 4),\\
+            &\text{[Student.Name, Gericht.Name, Sterne]}
+            \bigr)
+        \end{align*}
+
+    \item Geben Sie aus, welche Studierenden das Schnitzel bewertet haben.
+        \begin{align*}
+            \text{Proj}&\bigl(
+            \text{Sel}(Student \times Gericht \times Bewertung,\,
+            \text{Student.MatNr} = \text{Bewertung.MatNr} \text{ AND }\\
+            &\text{Bewertung.GNr} = \text{Gericht.GNr} \text{ AND }
+            \text{Gericht.Name} = \text{'Schnitzel'}),
+            [\text{Student.Name}]
+            \bigr)
+            \end{align*}
+        
+    \item Geben Sie aus, welcher Studierende mindestens zwei Bewertungen abgegeben hat.
+        \begin{align*}
+            \text{Proj}&\bigl(
+            \text{Sel}(Student \times Bewertung \times \text{Ren}(Bewertung,\, B2), \\ 
+            &Student.MatrNr=Bewertung.MatrNr\\
+            &\text{ AND } Student.MatrNr = B2.MatrNe)\\
+            & Bewertung.GNr \text{ NOT } B2.GNr,\, [Student.Name]
+            \bigr)
+        \end{align*}
+
+\end{enumerate}
