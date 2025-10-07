@@ -1,0 +1,43 @@
+% Ustawienia dla listings (kod źródłowy)
+\lstset{
+	language=[LaTeX]TeX,
+	basicstyle=\ttfamily\small,
+	backgroundcolor=\color{gray!10},
+	showspaces=false,
+	keepspaces=false,
+	frame=single, 
+	breaklines=true,
+	captionpos=b,
+	numbers=none,
+	numberstyle=\tiny,
+	keywordstyle=\color{blue},
+	commentstyle=\color{gray}
+}
+
+
+
+\definecolor{LightBlue}{rgb}{0.678,0.847,0.902}
+\definecolor{Orange}{rgb}{1.0,0.647,0.0}
+
+
+% / -> start kolor dla metod
+% | -> stop kolor dla metod
+% * -> start kolor dla typów
+% + -> stop kolor dla typów
+\lstdefinestyle{cppMethod}{
+	basicstyle=\ttfamily,
+	language=C++,
+	keywordstyle=\color{LightBlue}\bfseries,   % key word like int, while, retuen
+	identifierstyle=\color{black},							% rest of the text 
+	emph={if,else,else if,while, true},
+	emphstyle=\color{violet}\bfseries,
+	moredelim=**[is][\color{Orange}]{/}{|},
+	moredelim=**[is][keywordstyle]{*}{+},
+	literate={~}{{\ }}1
+}
+
+
+% \cppMethod{*sensors+./getHighAlarmTemp|(*amm+, addr)}
+\newcommand{\cppMethod}[1]{
+	\hspace*{-0.15em}\lstinline[style=cppMethod]!#1! % <- move to left a bit to not make 2 space effect
+}
