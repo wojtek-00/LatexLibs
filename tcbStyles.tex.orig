@@ -1,0 +1,28 @@
+
+
+<<<<<<< HEAD
+% how use
+	%\begin{tcolorbox}[red,title={Hinweis}]
+	
+	%\end{tcolorbox}
+=======
+				% how use
+					%\begin{tcolorbox}[#red#,title={#Hinweis#}]
+					
+					%\end{tcolorbox}
+>>>>>>> 0017bf35ef4ec5447c5612105b14ca3773d7a1eb
+
+\tcbset{
+	red/.style={
+		colback=red!5!white,
+		colframe=red!75!black,
+		fonttitle=\bfseries,
+		title=Beispiel,
+	},
+	blue/.style={
+		colback=blue!5!white,
+		colframe=blue!75!black,
+		fonttitle=\bfseries,
+		title=Beispiel,
+	}
+}
