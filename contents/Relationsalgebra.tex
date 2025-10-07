@@ -467,7 +467,8 @@ R \times S = \{(a_1, b_1), (a_1, b_2), (a_2, b_1), (a_2, b_2)\}
 \newpage
 \section{Aufgabenblatt 1}
 \subsection{Aufgabe 1}
-Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich selbst (Self-Join) gebildet werden muss oder wenn zwei Relationen Spalten mit denselben Namen besitzen.
+Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich selbst (Self-Join) gebildet werden muss.
+
     \begin{table}[H]
         \centering
         \textbf{Aufgaben:} \\ [10pt]
@@ -491,6 +492,7 @@ Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich se
         &\text{[Aufgabe.Name, A2.Name]}
         \bigr)
     \end{align*}
+
 
 \subsection{Aufgabe 2}
 \begin{table}[H]
@@ -549,6 +551,21 @@ Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich se
             \text{Proj}(Gericht,\, \text{[Art]})
         \end{align*}
 
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|}
+                \hline
+                \textbf{Art}\\
+                \hline
+                Haupt \\
+                Vor \\
+                Beilage \\
+                Nach\\
+                \hline  
+            \end{tabular}
+        \end{table}
+
     \item Geben Sie die Namen aller Hauptgerichte (mit der Art „Haupt“) aus.
         \begin{align*}
             \text{Proj}\bigl(
@@ -556,12 +573,40 @@ Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich se
             \bigr)
         \end{align*}
 
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|}
+                \hline
+                \textbf{Name}\\
+                \hline
+                Pizza \\
+                Schnitzel \\
+                \hline  
+            \end{tabular}
+        \end{table}
+
     \item Geben Sie eine Liste aller einzelnen Bewertungen aus (Ausgabe: Name des Gerichts, Sterne).
         \begin{align*}
             \text{Proj}\bigl(
             \text{Sel}(Gericht \times Bewertung,\, Gericht.GNr = Bewertung.GNr),\, \text{[Name, Sterne]}
             \bigr)
         \end{align*}
+
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|c|}
+                \hline
+                \textbf{Name} & \textbf{Sterne}\\
+                \hline
+                Pizza & 4 \\
+                TomatenSuppe & 3 \\
+                Schnitzel & 3 \\
+                Reis & 2 \\
+                \hline  
+            \end{tabular}
+        \end{table}
 
     \item Geben Sie die Namen aller Gerichte aus, die der Student Meier bewertet hat.
         \begin{align*}
@@ -572,14 +617,39 @@ Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich se
             \bigr)
         \end{align*}
 
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|}
+                \hline
+                \textbf{Name}\\
+                \hline
+                TomatenSuppe \\
+                Reis \\
+                \hline  
+            \end{tabular}
+        \end{table}
+
     \item Geben Sie alle Bewertungen aus (Name Student, Name Gericht, Sterne), die mindestens vier Sterne haben.
         \begin{align*}
             \text{Proj}&\bigl(
             \text{Sel}(Student \times Gericht \times Bewertung,\, Student.MatNr=Bewertung.MatrNr \text{ AND }\\
-            &Bewertung.GNr=Gericht.GNr \text{ AND } Bewertung.Sterne\text{ > } 4),\\
+            &Bewertung.GNr=Gericht.GNr \text{ AND } Bewertung.Sterne\text{ >= } 4),\\
             &\text{[Student.Name, Gericht.Name, Sterne]}
             \bigr)
         \end{align*}
+
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|c|c|}
+                \hline
+                \textbf{Name Student} & \textbf{Name Gericht} & \textbf{Sterne}\\
+                \hline
+                Meyer & Pizza & 4 \\
+                \hline  
+            \end{tabular}
+        \end{table}
 
     \item Geben Sie aus, welche Studierenden das Schnitzel bewertet haben.
         \begin{align*}
@@ -591,15 +661,39 @@ Der Ren-Operator wird benötigt, wenn ein Kreuzprodukt einer Tabelle mit sich se
             [\text{Student.Name}]
             \bigr)
             \end{align*}
+
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|}
+                \hline
+                \textbf{Student Name}\\
+                \hline
+                Maier \\
+                \hline  
+            \end{tabular}
+        \end{table}
         
     \item Geben Sie aus, welcher Studierende mindestens zwei Bewertungen abgegeben hat.
         \begin{align*}
             \text{Proj}&\bigl(
             \text{Sel}(Student \times Bewertung \times \text{Ren}(Bewertung,\, B2), \\ 
             &Student.MatrNr=Bewertung.MatrNr\\
-            &\text{ AND } Student.MatrNr = B2.MatrNe)\\
-            & Bewertung.GNr \text{ NOT } B2.GNr,\, [Student.Name]
+            &\text{ AND } Student.MatrNr = B2.MatrNr\\
+            & \text{ AND } Bewertung.GNr \text{ <> } B2.GNr),\, [Student.Name]
             \bigr)
         \end{align*}
+
+        \begin{table}[H]
+            \centering
+            \textbf{Ergebnisstabelle} \\ [3pt]
+            \begin{tabular}{|c|}
+                \hline
+                \textbf{Student Name}\\
+                \hline
+                Meier \\
+                \hline  
+            \end{tabular}
+        \end{table}
 
 \end{enumerate}
