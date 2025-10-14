@@ -41,3 +41,32 @@
 \newcommand{\cppMethod}[1]{
 	\hspace*{-0.15em}\lstinline[style=cppMethod]!#1! % <- move to left a bit to not make 2 space effect
 }
+
+
+% ============ SQL =====================
+\lstdefinelanguage{SQL}{
+	keywords={CREATE, TABLE, PRIMARY, KEY, FOREIGN, REFERENCES, CONSTRAINT, INTEGER, VARCHAR, DATE, TIME},
+	keywordstyle=\color{blue}\bfseries,
+	comment=[l]{--},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{gray}\itshape,
+	stringstyle=\color{orange},
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    showstringspaces=false,
+    columns=flexible,
+    frame=single,
+    breaklines=true,
+    tabsize=2,
+    captionpos=t
+}
+
+% EXAMPLE
+% \begin{lstlisting}[style=sqlstyle, caption={Przykładowe zapytanie SQL}]
+% SELECT * FROM STUDENT;
+% \end{lstlisting}
