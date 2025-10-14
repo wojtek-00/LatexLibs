@@ -52,3 +52,75 @@
         \end{tabular}
     \end{minipage}
 \end{table}
+
+\subsection{Aufgabe 2.1}
+    \begin{lstlisting}[style=sqlstyle, caption={Erstellen der Tabellen STUDENT, KLAUSUR und ANMELDUNG}]
+    CREATE TABLE STUDENT(
+        MatrNr INTEGER,
+        Name VARCHAR(5),
+        PRIMARY KEY (MatrNr)
+    );
+
+    CREATE TABLE KLAUSUR(
+        KNr INTEGER,
+        Name VARCHAR(25),
+        Datum DATE,
+        Zeit TIME,
+        PRIMARY KEY (KNr)
+    );
+
+    CREATE TABLE ANMELDUNG(
+        MatrNr INTEGER,
+        KNr INTEGER,
+        Versuch INTEGER,
+        CONSTRAINT FK_MatrNr
+            FOREIGN KEY (MatrNr)
+            REFERENCES STUDENT(MatrNr),
+        CONSTRAINT FK_KNr
+            FOREIGN KEY (KNr)
+            REFERENCES KLAUSUR(KNr)
+    );
+    \end{lstlisting}
+    
+    \vspace{1cm}
+    \begin{lstlisting}[style=sqlstyle, caption={Einfügen von Datensätzen in die Tabellen STUDENT, KLAUSUR und ANMELDUNG}]
+    INSERT INTO STUDENT VALUES(1,'Meier');
+    INSERT INTO STUDENT VALUES(2,'Meyer');
+    INSERT INTO STUDENT VALUES(3,'Maier');
+
+    INSERT INTO KLAUSUR VALUES(1,'Java 1','2024-01-14', '10:00:00');
+    INSERT INTO KLAUSUR VALUES(2,'Einfuhrung Inf.','2024-01-16', '08:00:00');
+    INSERT INTO KLAUSUR VALUES(3,'Mathematik 1','2024-01-20', '13:00:00');
+    INSERT INTO KLAUSUR VALUES(4,'Medieninformatik','2024-01-20', '08:00:00');
+    INSERT INTO KLAUSUR VALUES(5,'Audio/Video','2024-01-28', '15:30:00');
+
+    INSERT INTO ANMELDUNG VALUES(1,2,1);
+    INSERT INTO ANMELDUNG VALUES(1,4,2);
+    INSERT INTO ANMELDUNG VALUES(2,1,2);
+    INSERT INTO ANMELDUNG VALUES(3,3,3);
+    \end{lstlisting}
+
+    \subsection{Aufgabe 2.2}
+    \begin{lstlisting}[style=sqlstyle, caption={Einfügen von Datensätzen in die Tabellen STUDENT, KLAUSUR und ANMELDUNG}]
+    -- 1. Geben Sie die Namen aller Studierenden aus.
+    SELECT klausur.Name FROM student;
+    
+    -- 2. Geben Sie die Namen aller Klausuren aus, die um 08:00 Uhr geschrieben werden.
+    SELECT klausur.name FROM klausur WHERE zeit = '08:00:00';
+
+    -- 3. Geben Sie eine Liste aller Erstanmeldungen (nur 1. Versuch) fuer eine Klausur aus (Ausgabe: Name der Klausur, Name des Studierenden).
+    SELECT klausur.name, student.name FROM klausur, student, anmeldung WHERE anmeldung.versuch = 1 AND klausur.knr = anmeldung.knr AND student.matrnr = anmeldung.matrnr;
+
+    -- 4. Geben Sie die Namen aller Klausuren aus, feur die sich die Studentin "Meier" angemeldet hat.
+    SELECT klausur.name FROM klausur, student, anmeldung WHERE student.name Like 'Meier' AND klausur.knr = anmeldung.knr AND student.matrnr = anmeldung.matrnr;
+
+    -- 5. Geben Sie die Namen aller Studierenden aus, die mindestens zwei Klausuren im letzten Versuch (3. Versuch) schreiben.
+    SELECT student.name
+    FROM student, anmeldung a1, anmeldung a2
+    WHERE student.matrnr = a1.matrnr
+        AND student.matrnr = a2.matrnr
+        AND a1.knr <> a2.knr
+        AND a1.versuch >= 3
+        AND a2.versuch >= 3;
+    \end{lstlisting}
+    
