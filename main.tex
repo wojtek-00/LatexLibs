@@ -1,12 +1,13 @@
-\documentclass[12pt,oneside]{book}
+\documentclass[12pt,oneside,headings=big,parskip=half]{scrbook}
+
+
 
 
 % Config includes
 \input{libs/framework}
 \input{libs/tcbStyles}
 \input{libs/lstStyles}
-
-
+\input{libs/globalSettings.tex}
 
 
 
@@ -27,10 +28,15 @@
 	%\input{contents/Aufgaben-01.tex}
 	\input{contents/Relationsalgebra.tex}
 	
-	
-	\chapter{Aufgabenblatter}
-	\newpage
-	\input{contents/Aufgabenblatt-2.tex}
+	\chapter{Formalisierung von Tabellen in SQL}
+	\input{contents/TabellenInSQL.tex}
+
+	\chapter{Anfragen in SQL}
+	\input{contents/AnfragenInSQL.tex}
+
+	\chapter{Aufgabenblätter}
+	\input{contents/ExercisesLists/Aufgabenblatt-1.tex}
+	\input{contents/ExercisesLists/Aufgabenblatt-2.tex}
 
 
 
