@@ -579,4 +579,143 @@ Dies ist besonders nützlich bei Vergleichen, da SQL-Systeme oft zwischen Groß-
         WHERE Tier.GNr = Gehege.GNr;
     \end{sql}
 
+\subsection{Łączenie tabel za pomocą \rCode{JOIN}}
 
+SQL umożliwia łączenie danych z wielu tabel poprzez operator \rCode{JOIN}.  
+W przeciwieństwie do starszej składni, w której tabele były wymieniane po prostu w klauzuli \rCode{FROM},  
+podejście z użyciem \rCode{JOIN} jest bardziej czytelne i ułatwia zrozumienie relacji między tabelami.
+
+\pheading{Podstawowe rodzaje JOIN:}
+\begin{itemize}
+    \item \rCode{INNER JOIN} – zwraca tylko te wiersze, które mają dopasowanie w obu tabelach.
+    \item \rCode{LEFT JOIN} – zwraca wszystkie wiersze z tabeli po lewej stronie, nawet jeśli brak dopasowania w prawej.
+    \item \rCode{RIGHT JOIN} – zwraca wszystkie wiersze z tabeli po prawej stronie, nawet jeśli brak dopasowania w lewej.
+    \item \rCode{FULL JOIN} – zwraca wszystkie wiersze z obu tabel (jeśli obsługiwane przez DBMS).
+\end{itemize}
+
+\begin{tcolorbox}[blue={Wskazówka dotycząca JOIN}]
+\begin{itemize}
+    \item Warunek po słowie kluczowym \rCode{ON} określa relację między tabelami — zwykle poprzez klucz główny i klucz obcy.
+    \item \rCode{INNER JOIN} działa tak samo jak starsza metoda z wieloma tabelami i warunkiem \rCode{WHERE}.
+    \item W przypadku \rCode{LEFT JOIN} lub \rCode{RIGHT JOIN} brakujące wartości zostaną zastąpione przez \rCode{NULL}.
+\end{itemize}
+\end{tcolorbox}
+
+\subsubsection{Porównanie \rCode{INNER}, \rCode{LEFT} i \rCode{RIGHT JOIN}}
+
+Aby zrozumieć różnicę między poszczególnymi typami \rCode{JOIN}, rozważmy prosty przykład z dwiema tabelami.  
+Tabela \rCode{Student} zawiera listę studentów, a tabela \rCode{Kurs} — listę kursów, do których zapisano wybranych studentów.
+
+\begin{table}[H]
+    \centering
+    \textbf{Tabele źródłowe} \\ [10pt]
+    \begin{minipage}[t]{0.4\textwidth}
+        \centering
+        \textbf{Student} \\[3pt]
+        \begin{tabular}{|c|c|}
+            \hline
+            \textbf{ID} & \textbf{Name} \\
+            \hline
+            1 & Anna \\
+            2 & Ben \\
+            3 & Clara \\
+            4 & David \\ % bez kursu
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \hspace{0.3cm}
+    \begin{minipage}[t]{0.4\textwidth}
+        \centering
+        \textbf{Kurs} \\ [3pt]
+        \begin{tabular}{|c|c|}
+            \hline
+            \textbf{KursID} & \textbf{StudentID} \\
+            \hline
+            1 & 1 \\
+            2 & 1 \\
+            3 & 2 \\
+            4 & 5 \\ % student nie istnieje
+            \hline
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+\pheading{1. \rCode{INNER JOIN} – tylko dopasowane rekordy}
+\begin{sql}
+-- show only students who are registered in a course
+SELECT Student.Name, Kurs.KursID
+    FROM Student
+    INNER JOIN Kurs ON Student.ID = Kurs.StudentID;
+\end{sql}
+
+\pheading{Wynik:}
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    \textbf{Name} & \textbf{KursID} \\
+    \hline
+    Anna  & 1 \\
+    Anna  & 2 \\
+    Ben   & 3 \\
+    \hline
+\end{tabular}
+\end{center}
+
+\pheading{2. \rCode{LEFT JOIN} – wszystkie rekordy z lewej tabeli}
+\begin{sql}
+-- show all students, even if they are not registered in any course
+SELECT Student.Name, Kurs.KursID
+    FROM Student
+    LEFT JOIN Kurs ON Student.ID = Kurs.StudentID;
+\end{sql}
+
+\textbf{Wynik:}
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    \textbf{Name} & \textbf{KursID} \\
+    \hline
+    Anna  & 1 \\
+    Anna  & 2 \\
+    Ben   & 3 \\
+    Clara & NULL \\
+    David & NULL \\
+    \hline
+\end{tabular}
+\end{center}
+
+\pheading{3. \rCode{RIGHT JOIN} – wszystkie rekordy z prawej tabeli}
+\begin{sql}
+-- show all courses, even if no student is assigned
+SELECT Student.Name, Kurs.KursID
+    FROM Student
+    RIGHT JOIN Kurs ON Student.ID = Kurs.StudentID;
+\end{sql}
+
+\textbf{Wynik:}
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    \textbf{Name} & \textbf{KursID} \\
+    \hline
+    Anna & 1 \\
+    Anna & 2 \\
+    Ben  & 3 \\
+    NULL & 4 \\ % kurs bez studenta
+    \hline
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[gray={Opis}]
+\begin{itemize}
+    \item \rCode{INNER JOIN} – pokazuje tylko wiersze z dopasowaniem po obu stronach.
+    \item \rCode{LEFT JOIN} – zwraca wszystkie wiersze z tabeli po lewej stronie od \rCode{JOIN}, nawet jeśli nie mają dopasowania w tabeli po prawej.
+    \item \rCode{RIGHT JOIN} – zwraca wszystkie wiersze z tabeli po prawej stronie od \rCode{JOIN}, nawet jeśli nie mają dopasowania w tabeli po lewej.
+\end{itemize}
+\end{tcolorbox}
+
+\textbf{Różnica w praktyce:}
+\begin{itemize}
+    \item W zapytaniu \rCode{LEFT JOIN} – lewa tabela (\textbf{Student}) to ta po słowie \rCode{FROM}. Wszystkie jej rekordy są zachowane.
+    \item W zapytaniu \rCode{RIGHT JOIN} – prawa tabela (\textbf{Kurs}) to ta po \rCode{JOIN}. Wszystkie jej rekordy są zachowane.
+\end{itemize}

@@ -114,13 +114,26 @@
     -- 4. Geben Sie die Namen aller Klausuren aus, feur die sich die Studentin "Meier" angemeldet hat.
     SELECT klausur.name FROM klausur, student, anmeldung WHERE student.name Like 'Meier' AND klausur.knr = anmeldung.knr AND student.matrnr = anmeldung.matrnr;
 
+        -- oder
+
+    SELECT klausur.name FROM student, klausur, anmeldung WHERE anmeldung.matrnr = student.matrnr AND anmeldung.knr = klausur.knr AND student.name='Meier';
+
     -- 5. Geben Sie die Namen aller Studierenden aus, die mindestens zwei Klausuren im letzten Versuch (3. Versuch) schreiben.
-    SELECT student.name
-    FROM student, anmeldung a1, anmeldung a2
-    WHERE student.matrnr = a1.matrnr
-        AND student.matrnr = a2.matrnr
-        AND a1.knr <> a2.knr
-        AND a1.versuch >= 3
-        AND a2.versuch >= 3;
+    SELECT DISTINCT student.name
+        FROM student, anmeldung a1, anmeldung a2
+        WHERE student.matrnr = a1.matrnr
+            AND student.matrnr = a2.matrnr
+            AND a1.knr <> a2.knr
+            AND a1.versuch >= 3
+            AND a2.versuch >= 3;
+
+        -- oder
+        
+    SELECT DISTINCT name FROM student
+        JOIN anmeldung AS a1 ON a1.matrnr=student.matrnr
+        JOIN anmeldung AS a2 ON a2.matrnr=student.matrnr
+        WHERE a1.versuch >= 3
+            AND a2.versuch >= 3
+            AND a1.knr <> a2.knr;   
     \end{lstlisting}
     
