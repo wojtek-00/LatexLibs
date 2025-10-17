@@ -1,4 +1,14 @@
-% Ustawienia dla listings (kod źródłowy)
+% filename: lstStyles.tex
+% !TeX root = ../../main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                LISTINGS SETTINGS
+%  (Source code appearance and syntax highlighting)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% --------------------------------------------------
+% GLOBAL LISTINGS SETTINGS (applied to all code)
+% --------------------------------------------------
 \lstset{
 	language=[LaTeX]TeX,
 	basicstyle=\ttfamily\small,
@@ -14,60 +24,76 @@
 	commentstyle=\color{gray}
 }
 
-
-
+% ==================================================
+%                  C++ LISTING STYLE
+% ==================================================
+%  Special highlighting for methods and types:
+%   / ... |   → highlights methods in orange
+%   * ... +   → highlights types in light blue
+% ==================================================
 \definecolor{LightBlue}{rgb}{0.678,0.847,0.902}
 \definecolor{Orange}{rgb}{1.0,0.647,0.0}
 
 
-% / -> start kolor dla metod
-% | -> stop kolor dla metod
-% * -> start kolor dla typów
-% + -> stop kolor dla typów
 \lstdefinestyle{cppMethod}{
-	basicstyle=\ttfamily,
 	language=C++,
-	keywordstyle=\color{LightBlue}\bfseries,   % klasy
-	identifierstyle=\color{black},
-	emph={if,else,else if,while},
+	basicstyle=\ttfamily,
+	keywordstyle=\color{LightBlue}\bfseries,     % keywords like int, while, return
+	identifierstyle=\color{black},               % all other identifiers
+	emph={if,else,else if,while,true},
 	emphstyle=\color{violet}\bfseries,
-	moredelim=**[is][\color{Orange}]{/}{|},
-	moredelim=**[is][keywordstyle]{*}{+}
+	moredelim=**[is][\color{Orange}]{/}{|},      % delimiters for methods
+	moredelim=**[is][keywordstyle]{*}{+},        % delimiters for types
+	literate={~}{{\ }}1
 }
 
-
-% \cppMethod{*sensors+./getHighAlarmTemp|(*amm+, addr)}
-\newcommand{\cppMethod}[1]{
-	\lstinline[style=cppMethod]!#1!%
+% Inline C++ method formatting command
+% Usage: \cppMethod{*Type+./method|(args)}
+\newcommand{\cppMethod}[1]{%
+	\hspace*{-0.15em}\lstinline[style=cppMethod]!#1! % slight left shift for alignment
 }
 
+% ==================================================
+%                  SQL LISTING STYLE
+% ==================================================
+\definecolor{SQLlightGreen}{rgb}{0.512, 0.775, 0.443}
+\definecolor{SQLlightOrange}{rgb}{0.775, 0.502, 0.094}
+\definecolor{SQLlightCyan}{rgb}{0.133, 0.592, 0.853}
 
-
-
-% ============ SQL =====================
 \lstdefinelanguage{SQL}{
-	keywords={CREATE, TABLE, PRIMARY, KEY, FOREIGN, REFERENCES, CONSTRAINT, INTEGER, VARCHAR, DATE, TIME},
-	keywordstyle=\color{blue}\bfseries,
+	keywords={
+		CREATE, TABLE, PRIMARY, KEY, FOREIGN, REFERENCES, CONSTRAINT, ADD, OR, CHECK, FROM, SELECT, DISTINCT, AS, ORDER, BY, WHERE, LIKE, INSERT, INTO, VALUES, IS, NULL, AND
+	},
+	keywordstyle=\color{SQLlightGreen}\bfseries,
+	morekeywords=[2]{INTEGER, VARCHAR, DATE, TIME},
+	keywordstyle=[2]\color{SQLlightOrange}\bfseries,
 	comment=[l]{--},
 	morecomment=[s]{/*}{*/},
 	commentstyle=\color{gray}\itshape,
-	stringstyle=\color{orange},
+	stringstyle=\color{SQLlightCyan},
 	morestring=[b]',
 	morestring=[b]"
 }
 
 \lstdefinestyle{sqlstyle}{
-    language=SQL,
-    basicstyle=\ttfamily\small,
-    showstringspaces=false,
-    columns=flexible,
-    frame=single,
-    breaklines=true,
-    tabsize=2,
-    captionpos=t
+	language=SQL,
+	basicstyle=\ttfamily\small,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,
+	breaklines=true,
+	tabsize=2,
+	captionpos=t,
+	autogobble=true
 }
 
-% EXAMPLE
-% \begin{lstlisting}[style=sqlstyle, caption={Przykładowe zapytanie SQL}]
-% SELECT * FROM STUDENT;
-% \end{lstlisting}
+% SQL environment shortcut
+% Usage:
+% \begin{sql}
+%   SELECT * FROM STUDENT;
+% \end{sql}
+\lstnewenvironment{sql}{\lstset{style=sqlstyle}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                END OF FILE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
