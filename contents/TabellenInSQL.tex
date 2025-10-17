@@ -91,9 +91,9 @@ Dzięki ograniczeniom możliwe jest zapewnienie integralności i spójności dan
     \item Każde ograniczenie może posiadać nazwę — ułatwia to późniejsze modyfikacje lub usunięcie.
     \item Do najczęściej używanych ograniczeń należą:
     \begin{itemize}
-        \item \texttt{PRIMARY KEY} – gwarantuje unikalność i brak wartości \texttt{NULL}.
-        \item \texttt{FOREIGN KEY} – definiuje relację między tabelami (klucz obcy) - To kolumna w jednej tabeli, która odwołuje się do klucza głównego w innej tabeli.
-        \item \texttt{REFERENCES} – wskazuje, do której tabeli i kolumny odnosi się klucz obcy.
+        \item \rCode{PRIMARY KEY} – gwarantuje unikalność i brak wartości \rCode{NULL}.
+        \item \rCode{FOREIGN KEY} – definiuje relację między tabelami (klucz obcy) - To kolumna w jednej tabeli, która odwołuje się do klucza głównego w innej tabeli.
+        \item \rCode{REFERENCES} – wskazuje, do której tabeli i kolumny odnosi się klucz obcy.
     \end{itemize}
 \end{itemize}
 
@@ -117,22 +117,22 @@ Dzięki temu baza danych zapewnia, że każda wartość w kolumnie \textbf{Betre
 odpowiada istniejącemu sprzedawcy w tabeli \textbf{Verkaeufer}.
 
 \begin{tcolorbox}[blue, title={Hinweis}]
-    \texttt{CONSTRAINT} definiert eine benannte Regel (Einschränkung), 
+    \rCode{CONSTRAINT} definiert eine benannte Regel (Einschränkung), 
     die von der Datenbank automatisch überprüft wird.  
-    \texttt{FOREIGN KEY} gibt die Spalte in der aktuellen Tabelle an, 
-    während \texttt{REFERENCES} bestimmt, auf welche Tabelle und Spalte 
+    \rCode{FOREIGN KEY} gibt die Spalte in der aktuellen Tabelle an, 
+    während \rCode{REFERENCES} bestimmt, auf welche Tabelle und Spalte 
     sich diese Spalte bezieht.  
 
-    Bei jedem Einfügen eines neuen Datensatzes in die Tabelle \texttt{Kunde} 
+    Bei jedem Einfügen eines neuen Datensatzes in die Tabelle \rCode{Kunde} 
     überprüft das Datenbanksystem automatisch, ob der in der Spalte 
-    \texttt{Betreuer} eingetragene Wert in \texttt{Verkaeufer.Vnr} existiert.  
+    \rCode{Betreuer} eingetragene Wert in \rCode{Verkaeufer.Vnr} existiert.  
     Ist dies der Fall, wird der Datensatz gespeichert,  
     andernfalls wird der Vorgang abgelehnt.
 \end{tcolorbox}
 
 
 \begin{tcolorbox}[red, title={Hinweis}]
-    \texttt{FOREIGN KEY} zawsze musi odnosić się do \texttt{PRIMARY KEY} (lub innego klucza unikalnego) w innej tabeli.
+    \rCode{FOREIGN KEY} zawsze musi odnosić się do \rCode{PRIMARY KEY} (lub innego klucza unikalnego) w innej tabeli.
 \end{tcolorbox}
 
 Więcej do tego tematu w punkcie \autoref{sql:constraints}
@@ -162,22 +162,22 @@ INSERT INTO Kunde VALUES(4,'Edna',NULL);
 \end{lstlisting}
 
 \subsection{Update}
-Dieser Befehl ändert die Werte eines bestehenden Datensatzes in der Tabelle \texttt{Kunde}.  
-Mit \texttt{SET} werden die neuen Werte für die angegebenen Spalten festgelegt,  
-und die \texttt{WHERE}-Bedingung bestimmt, welcher Datensatz aktualisiert wird.  
-Alle definierten \texttt{CONSTRAINTS} (z.\,B. \texttt{FOREIGN KEY}) müssen dabei erfüllt bleiben – 
-das bedeutet, dass der neue Wert in \texttt{Betreuer} nur gesetzt werden kann, 
-wenn dieser auch in \texttt{Verkaeufer.Vnr} existiert.
+Dieser Befehl ändert die Werte eines bestehenden Datensatzes in der Tabelle \textbf{Kunde}.  
+Mit \rCode{SET} werden die neuen Werte für die angegebenen Spalten festgelegt,  
+und die \rCode{WHERE}-Bedingung bestimmt, welcher Datensatz aktualisiert wird.  
+Alle definierten \rCode{CONSTRAINTS} (z.\,B. \rCode{FOREIGN KEY}) müssen dabei erfüllt bleiben – 
+das bedeutet, dass der neue Wert in \textbf{Betreuer} nur gesetzt werden kann, 
+wenn dieser auch in \textbf{Verkaeufer.Vnr} existiert.
 
     \begin{lstlisting}[style=sqlstyle]
     UPDATE Kunde
         SET Name='Edwina', Betreuer=1002
         WHERE Name='Edna'
     \end{lstlisting}
-Der Befehl sucht alle Datensätze in der Tabelle \texttt{Kunde}, bei denen der Name \texttt{'Edna'} ist, 
-und ändert diesen Namen zu \texttt{'Edwina'} sowie den Betreuer auf \texttt{1002}. 
-Vor dem Speichern prüft die Datenbank alle \texttt{CONSTRAINTS} – 
-die neue Betreuer-Nummer muss daher bereits in \texttt{Verkaeufer.Vnr} existieren, 
+Der Befehl sucht alle Datensätze in der Tabelle \textbf{Kunde}, bei denen der Name \textbf{'Edna'} ist, 
+und ändert diesen Namen zu \textbf{'Edwina'} sowie den Betreuer auf \textbf{1002}. 
+Vor dem Speichern prüft die Datenbank alle \rCode{CONSTRAINTS} – 
+die neue Betreuer-Nummer muss daher bereits in \textbf{Verkaeufer.Vnr} existieren, 
 ansonsten wird die Aktualisierung verweigert.
 
 \pheading{Weiterer Beispiel}
@@ -188,7 +188,7 @@ ansonsten wird die Aktualisierung verweigert.
 
 \subsection{Überprüfung des Inhalts einer Tabelle}
     Dieser Befehl zeigt alle gespeicherten Datensätze einer Tabelle an.  
-    Das Sternchen \texttt{*} steht dabei für „alle Spalten“.  
+    Das Sternchen \rCode{*} steht dabei für „alle Spalten“.  
     So können sämtliche Inhalte der angegebenen Tabelle überprüft werden, 
     z.\,B. um zu kontrollieren, ob Einträge korrekt eingefügt oder aktualisiert wurden.
 
@@ -203,22 +203,22 @@ ansonsten wird die Aktualisierung verweigert.
 DELETE FROM <Tabellenname> WHERE <Bedingung>
     \end{lstlisting}
 
-    Mit dem \texttt{DELETE}-Befehl können Datensätze aus einer Tabelle gelöscht werden, 
+    Mit dem \rCode{DELETE}-Befehl können Datensätze aus einer Tabelle gelöscht werden, 
     die eine bestimmte Bedingung erfüllen. Wird keine Bedingung angegeben, 
-    löscht der Befehl \texttt{DELETE} alle Datensätze der Tabelle.
+    löscht der Befehl \rCode{DELETE} alle Datensätze der Tabelle.
 
 \pheading{Beispiel}
     \begin{lstlisting}[style=sqlstyle]
         DELETE FROM Kunde WHERE Knr = 3;
     \end{lstlisting}
-    In diesem Beispiel wird der Datensatz mit der Kundennummer \texttt{3} aus der Tabelle \texttt{Kunde} entfernt.
+    In diesem Beispiel wird der Datensatz mit der Kundennummer \rCode{3} aus der Tabelle \rCode{Kunde} entfernt.
 
 \subsubsection{Delete on Cascade}
-    Die Anweisung \texttt{ON DELETE CASCADE} definiert das Verhalten der Datenbank beim Löschen von Datensätzen in einer übergeordneten Tabelle.
+    Die Anweisung \rCode{ON DELETE CASCADE} definiert das Verhalten der Datenbank beim Löschen von Datensätzen in einer übergeordneten Tabelle.
     Sie legt fest, dass alle abhängigen Datensätze in der untergeordneten Tabelle automatisch gelöscht werden, 
     sobald der zugehörige Datensatz in der übergeordneten Tabelle entfernt wird.
 
-    Im folgenden Beispiel bezieht sich die Tabelle \texttt{Kunde} über den Fremdschlüssel \texttt{Betreuer} auf die Tabelle \texttt{Verkaeufer}.
+    Im folgenden Beispiel bezieht sich die Tabelle \textbf{Kunde} über den Fremdschlüssel \textbf{Betreuer} auf die Tabelle \textbf{Verkaeufer}.
     Wird ein Verkäufer gelöscht, so werden alle Kunden, die diesem Verkäufer zugeordnet sind, automatisch mit gelöscht.
 
     \begin{lstlisting}[style=sqlstyle]
@@ -242,7 +242,7 @@ DELETE FROM <Tabellenname> WHERE <Bedingung>
 
 Der SQL-Standard definiert mehrere Möglichkeiten, wie eine Datenbank mit 
 abhängigen Datensätzen umgeht, wenn ein referenzierter Eintrag aus der übergeordneten Tabelle gelöscht wird. 
-Diese Optionen werden in der \texttt{FOREIGN KEY}-Definition mit der Klausel \texttt{ON DELETE} angegeben:
+Diese Optionen werden in der \rCode{FOREIGN KEY}-Definition mit der Klausel \rCode{ON DELETE} angegeben:
 
 \begin{itemize}
     \item \textbf{NO ACTION} — Standardverhalten. 
@@ -254,9 +254,9 @@ Diese Optionen werden in der \texttt{FOREIGN KEY}-Definition mit der Klausel \te
     werden alle zugehörigen abhängigen Datensätze automatisch mit entfernt.
     
     \item \textbf{SET NULL} — Beim Löschen eines referenzierten Datensatzes 
-    wird der Fremdschlüsselwert in allen abhängigen Datensätzen automatisch auf \texttt{NULL} gesetzt.
+    wird der Fremdschlüsselwert in allen abhängigen Datensätzen automatisch auf \rCode{NULL} gesetzt.
     
-    \item \textbf{SET DEFAULT} — Wenn für den Fremdschlüssel ein Standardwert (\texttt{DEFAULT}) definiert ist, 
+    \item \textbf{SET DEFAULT} — Wenn für den Fremdschlüssel ein Standardwert (\rCode{DEFAULT}) definiert ist, 
     wird dieser Wert in den abhängigen Datensätzen gesetzt, 
     sobald der referenzierte Datensatz gelöscht wird.
 
@@ -276,7 +276,7 @@ Diese Optionen werden in der \texttt{FOREIGN KEY}-Definition mit der Klausel \te
 \subsubsection{Löschen von Tabellen}
 
 Das Löschen ganzer Tabellen kann bei bestehenden Fremdschlüsselbeziehungen zu Problemen führen. 
-Je nach gewählter Option wird das Verhalten des Befehls \texttt{DROP TABLE} vom Datenbankmanagementsystem (DBMS) unterschiedlich gehandhabt.
+Je nach gewählter Option wird das Verhalten des Befehls \rCode{DROP TABLE} vom Datenbankmanagementsystem (DBMS) unterschiedlich gehandhabt.
 
 \pheading{Beispielvarianten}
 
@@ -290,7 +290,7 @@ Je nach gewählter Option wird das Verhalten des Befehls \texttt{DROP TABLE} vom
     Die eigentlichen Daten in diesen abhängigen Tabellen bleiben jedoch bestehen.
     
     \item \textbf{Kurzform: DROP TABLE <Tabellenname>}\\
-    Führt – abhängig vom verwendeten DBMS – automatisch entweder die \texttt{RESTRICT}- oder \texttt{CASCADE}-Variante aus.
+    Führt – abhängig vom verwendeten DBMS – automatisch entweder die \rCode{RESTRICT}- oder \rCode{CASCADE}-Variante aus.
 \end{itemize}
 
 \begin{tcolorbox}[red, title={Hinweis}]
@@ -306,16 +306,16 @@ Die folgenden Ausführungen beziehen sich auf PostgreSQL und beschränken sich a
 
 \subsection{Ganze Zahlen}
 \begin{itemize}
-    \item \textbf{\rCode{SMALLINT}}: Wertebereich von \texttt{-32.768} bis \texttt{+32.767}
-    \item \textbf{\rCode{INTEGER}}: Wertebereich von \texttt{-2.147.483.647} bis \texttt{+2.147.483.646}
+    \item \textbf{\rCode{SMALLINT}}: Wertebereich von \rCode{-32.768} bis \rCode{+32.767}
+    \item \textbf{\rCode{INTEGER}}: Wertebereich von \rCode{-2.147.483.647} bis \rCode{+2.147.483.646}
     \item \textbf{\rCode{BIGINT}}: für sehr große Ganzzahlen (bis ca. $\pm 9{,}22 \times 10^{18}$)
 \end{itemize}
 
 \subsection{Kommazahlen}
     \begin{itemize}
         \item \textbf{\rCode{DECIMAL(p, q)}} oder \textbf{\rCode{NUMERIC(p, q)}}: 
-        ermöglicht die Angabe von Genauigkeit \texttt{p} (Gesamtzahl der Stellen) 
-        und \texttt{q} (Nachkommastellen); 
+        ermöglicht die Angabe von Genauigkeit \rCode{p} (Gesamtzahl der Stellen) 
+        und \rCode{q} (Nachkommastellen); 
         bis zu 131.072 Stellen vor und 16.383 Stellen nach dem Komma.
         \item \textbf{\rCode{REAL}}: Gleitkommazahlen mit mindestens sechs signifikanten Stellen 
         (häufig auch als \rCode{FLOAT} bezeichnet).
@@ -325,8 +325,8 @@ Die folgenden Ausführungen beziehen sich auf PostgreSQL und beschränken sich a
 
     \subsection{Zeichenketten}
     \begin{itemize}
-        \item \textbf{\rCode{CHAR(q)}}: speichert immer exakt \texttt{q} Zeichen, gegebenenfalls mit Leerzeichen aufgefüllt.
-        \item \textbf{\rCode{VARCHAR(q)}}: speichert bis zu \texttt{q} Zeichen.
+        \item \textbf{\rCode{CHAR(q)}}: speichert immer exakt \rCode{q} Zeichen, gegebenenfalls mit Leerzeichen aufgefüllt.
+        \item \textbf{\rCode{VARCHAR(q)}}: speichert bis zu \rCode{q} Zeichen.
     \end{itemize}
 
     \subsection{Datum und Zeit}
@@ -410,7 +410,7 @@ u & u & u & u & u \\
 SELECT * FROM Mitarbeiter WHERE Gehalt > 2000;
 \end{lstlisting}
 
-Jeśli w tabeli \rCode{Mitarbeiter} znajdują się następujące dane:
+Jeśli w tabeli \textbf{Mitarbeiter} znajdują się następujące dane:
 
 \begin{center}
 \begin{tabular}{l|c}
@@ -422,7 +422,7 @@ Eva  & 1500 \\
 \end{tabular}
 \end{center}
 
-to wynik zapytania będzie zawierał jedynie rekord \texttt{Anna}, ponieważ:
+to wynik zapytania będzie zawierał jedynie rekord \textbf{Anna}, ponieważ:
 \begin{itemize}
     \item \textbf{Anna:} 3000 > 2000 → \textit{prawda (t)}
     \item \textbf{Bob:} \rCode{NULL} > 2000 → \textit{nieznany (u)}
@@ -484,7 +484,7 @@ Porównania w stylu \rCode{= NULL} lub \rCode{<> NULL} zawsze zwrócą wynik \te
 
 \pheading{Przykład: Ograniczenie warunkowe dla wartości płacy}
 
-    Załóżmy, że programiści o statusie \rCode{Junior} mogą zarabiać maksymalnie 2000.  
+    Załóżmy, że programiści o statusie \textbf{Junior} mogą zarabiać maksymalnie 2000.  
     Aby to wymusić, można zdefiniować ograniczenie \rCode{CHECK}:
 
     \begin{lstlisting}[style=sqlstyle]
