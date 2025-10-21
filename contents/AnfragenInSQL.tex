@@ -525,6 +525,61 @@ Dies ist besonders nützlich bei Vergleichen, da SQL-Systeme oft zwischen Groß-
         \end{itemize}
     \end{tcolorbox}
 
+    \begin{tcolorbox}[red={Hinweis}]
+
+        Funkcja \rCode{COUNT()} służy do zliczania wierszy w tabeli lub w ramach grupy utworzonej przez \rCode{GROUP BY}.  
+        W zależności od argumentu działa w nieco inny sposób.
+
+        \paragraph{1. \rCode{COUNT(*)}}
+        Liczy \textbf{wszystkie wiersze}, niezależnie od tego, czy w kolumnach występują wartości \rCode{NULL}.
+
+        \begin{sql}
+        SELECT Gattung, COUNT(*) AS Tieranzahl
+            FROM Tier
+            GROUP BY Gattung;
+        \end{sql}
+
+        \noindent
+        Wynik pokazuje liczbę wszystkich zwierząt dla każdego gatunku. \rCode{COUNT(*)} nie wymaga podania kolumny jako argumentu — odnosi się do całych wierszy tabeli.
+
+        \vspace{0.5em}
+
+        \paragraph{2. \rCode{COUNT(kolumna)}}
+        Liczy tylko te wiersze, w których dana kolumna nie ma wartości \rCode{NULL}.
+
+        \begin{sql}
+        SELECT COUNT(GName) AS AnzahlNamen
+            FROM Gehege;
+        \end{sql}
+
+        \noindent
+        Jeśli w niektórych wierszach kolumna \rCode{GName} ma wartość \rCode{NULL}, nie zostaną one uwzględnione w zliczaniu.
+
+        \vspace{0.5em}
+
+        \paragraph{3. \rCode{COUNT(DISTINCT kolumna)}}
+        Zlicza tylko \textbf{unikalne wartości} w kolumnie (również pomijając \rCode{NULL}).
+
+        \begin{sql}
+        SELECT COUNT(DISTINCT Gattung) AS AnzahlGattungen
+            FROM Tier;
+        \end{sql}
+
+        \noindent
+        To zapytanie zwróci liczbę różnych gatunków w tabeli \rCode{Tier}.
+
+        \vspace{0.5em}
+
+
+        \paragraph{Wniosek:}
+        \begin{itemize}
+            \item \rCode{COUNT(*)} — gdy chcemy policzyć wszystkie rekordy (np. wszystkie zwierzęta),
+            \item \rCode{COUNT(kolumna)} — gdy interesują nas tylko niepuste dane w konkretnej kolumnie,
+            \item \rCode{COUNT(DISTINCT kolumna)} — gdy chcemy poznać liczbę różnych wartości (np. gatunków).
+        \end{itemize}
+
+    \end{tcolorbox}
+
     \textbf{Beispiel:} Äquivalente Zählung über ein bestimmtes Attribut
     \begin{sql}
     -- count all non-null values in the column "Gattung"
