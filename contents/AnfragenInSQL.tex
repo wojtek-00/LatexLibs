@@ -723,3 +723,76 @@ SELECT Student.Name, Kurs.KursID
     \item W zapytaniu \rCode{LEFT JOIN} – lewa tabela (\textbf{Student}) to ta po słowie \rCode{FROM}. Wszystkie jej rekordy są zachowane.
     \item W zapytaniu \rCode{RIGHT JOIN} – prawa tabela (\textbf{Kurs}) to ta po \rCode{JOIN}. Wszystkie jej rekordy są zachowane.
 \end{itemize}
+
+\subsection{Gruppierung in einer Tabelle}
+
+\begin{table}[H]
+    \scriptsize
+    \centering
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Gehenge} \\[3pt]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Gnr} & \textbf{GName} & \textbf{Flaeche} \\
+            \hline
+            1 & Wald & 20 \\
+            \hline
+            2 & Feld & 10 \\
+            \hline
+            3 & Weide & 9 \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \hspace{0.2cm}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Tier} \\[3pt]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Gnr} & \textbf{TName} & \textbf{Gattung} \\
+            \hline
+            1 & Laber & Bär \\
+            \hline
+            1 & Sabber & Bär \\
+            \hline
+            2 & Klopfer & Hase \\
+            \hline
+            3 & Bunny & Hase \\
+            \hline
+            3 & Runny & Hase \\
+            \hline
+            3 & Hunny & Hase \\
+            \hline
+            2 & Harald & Schaf \\
+            \hline
+            3 & Walter & Schaf \\
+            \hline
+            3 & Doerthe & Schaf \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \hspace{0.2cm}
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        \textbf{Art} \\[3pt]
+        \begin{tabular}{|c|c|}
+            \hline
+            \textbf{Gattung} & \textbf{Min Fläche} \\
+            \hline
+            Bär & 8 \\
+            \hline
+            Hase & 2 \\
+            \hline
+            Schaf & 5 \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \end{table}
+
+    \pheading{Ausgabe deer Anzahl der Tiere Je Gattung}
+    \begin{sql}
+        SELECT  Tier.Gattung, COUNT(*) Tieranzahl
+            FROM Tier
+            GROUP BY Tier.Gattung
+    \end{sql}
