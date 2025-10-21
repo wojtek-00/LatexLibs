@@ -579,6 +579,10 @@ Dies ist besonders nützlich bei Vergleichen, da SQL-Systeme oft zwischen Groß-
         WHERE Tier.GNr = Gehege.GNr;
     \end{sql}
 
+\begin{tcolorbox}[red = {Hinweis}]
+    Ein Kreuzprodukt mit einer Tabelle, die keine Einträge enthält, führt zu einer Ausgabe ohne Elemente. Das Kreuzprodukt verknüpft nämlich alle Einträge der ersten Tabelle mit allen Einträgen der zweiten Tabelle. Wenn eine der Tabellen leer ist, können folglich keine Kombinationen gebildet werden.
+\end{tcolorbox}
+
 \subsection{Łączenie tabel za pomocą \rCode{JOIN}}
 
 SQL umożliwia łączenie danych z wielu tabel poprzez operator \rCode{JOIN}.  
