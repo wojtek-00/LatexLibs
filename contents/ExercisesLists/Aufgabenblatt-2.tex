@@ -57,7 +57,7 @@
     \begin{lstlisting}[style=sqlstyle, caption={Erstellen der Tabellen STUDENT, KLAUSUR und ANMELDUNG}]
     CREATE TABLE STUDENT(
         MatrNr INTEGER,
-        Name VARCHAR(5),
+        Name VARCHAR(30),
         PRIMARY KEY (MatrNr)
     );
 
@@ -73,6 +73,7 @@
         MatrNr INTEGER,
         KNr INTEGER,
         Versuch INTEGER,
+        PRIMARY KEY (MatrNr, KNr)
         CONSTRAINT FK_MatrNr
             FOREIGN KEY (MatrNr)
             REFERENCES STUDENT(MatrNr),
@@ -109,7 +110,7 @@
     SELECT klausur.name FROM klausur WHERE zeit = '08:00:00';
 
     -- 3. Geben Sie eine Liste aller Erstanmeldungen (nur 1. Versuch) fuer eine Klausur aus (Ausgabe: Name der Klausur, Name des Studierenden).
-    SELECT klausur.name, student.name FROM klausur, student, anmeldung WHERE anmeldung.versuch = 1 AND klausur.knr = anmeldung.knr AND student.matrnr = anmeldung.matrnr;
+    SELECT klausur.name, student.name FROM klausur, student, anmeldung AND klausur.knr = student.knr AND student.matrnr = anmeldung.matrnr WHERE anmeldung.versuch = 1;
 
     -- 4. Geben Sie die Namen aller Klausuren aus, feur die sich die Studentin "Meier" angemeldet hat.
     SELECT klausur.name FROM klausur, student, anmeldung WHERE student.name Like 'Meier' AND klausur.knr = anmeldung.knr AND student.matrnr = anmeldung.matrnr;
