@@ -26,6 +26,59 @@
 }
 
 % ==================================================
+%                  JAVA LISTING STYLE
+% ==================================================
+\definecolor{JavaLightPurple}{rgb}{0.6, 0.4, 0.8}
+\definecolor{JavaLightBlue}{rgb}{0.2, 0.6, 0.8}
+\definecolor{JavaOrange}{rgb}{1.0, 0.55, 0.0}
+\definecolor{JavaGray}{rgb}{0.45, 0.45, 0.45}
+
+\lstdefinelanguage{JavaCustom}{
+	language=Java,
+	morekeywords={
+		class, interface, extends, implements, public, private, protected,
+		static, final, abstract, synchronized, transient, volatile,
+		if, else, while, for, do, switch, case, default, break, continue,
+		try, catch, finally, throw, throws, return, new, import, package,
+		this, super, instanceof, enum, void, true, false, null
+	},
+	keywordstyle=\color{JavaLightBlue}\bfseries,
+	emph={String, Integer, Double, Float, Boolean, Character, ArrayList, HashMap, Set, Map},
+	emphstyle=\color{JavaLightPurple}\bfseries,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{JavaGray}\itshape,
+	stringstyle=\color{JavaOrange},
+	morestring=[b]",
+	morestring=[b]'
+}
+
+\lstdefinestyle{javastyle}{
+	language=JavaCustom,
+	basicstyle=\ttfamily\small,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,
+	breaklines=true,
+	tabsize=2,
+	captionpos=t,
+	autogobble=true,
+	backgroundcolor=\color{gray!10}
+}
+
+% Java environment shortcut
+% Usage:
+% \begin{java}
+%   public class Test {
+%     public static void main(String[] args) {
+%       System.out.println("Hello, world!");
+%     }
+%   }
+% \end{java}
+\lstnewenvironment{java}{\lstset{style=javastyle}}{}
+
+
+% ==================================================
 %                  C++ LISTING STYLE
 % ==================================================
 %  Special highlighting for methods and types:
@@ -47,6 +100,25 @@
 	moredelim=**[is][keywordstyle]{*}{+},        % delimiters for types
 	literate={~}{{\ }}1
 }
+
+\lstdefinestyle{cppStyle}{
+	language=C++,
+	basicstyle=\ttfamily\small,
+	showstringspaces=false,
+	columns=flexible,
+	frame=single,
+	breaklines=true,
+	tabsize=2,
+	captionpos=t,
+	autogobble=true
+}
+
+% SQL environment shortcut
+% Usage:
+% \begin{sql}
+%   SELECT * FROM STUDENT;
+% \end{sql}
+\lstnewenvironment{cpp}{\lstset{style=cppStyle}}{}
 
 % Inline C++ method formatting command
 % Usage: \cppMethod{*Type+./method|(args)}
