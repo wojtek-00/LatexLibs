@@ -1,0 +1,142 @@
+% filename: BigONotation.tex
+% !TeX root = ../main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   BIG O NOTATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Big O Notation}
+
+Die \rCode{Big O}-Notation beschreibt, wie stark die Laufzeit oder der Speicherverbrauch eines Algorithmus
+mit der Größe der Eingabe \rCode{n} wächst.  
+Sie dient also zur Charakterisierung der Effizienz eines Algorithmus im \textbf{asymptotischen Grenzfall} – 
+wenn \rCode{n} sehr groß wird.
+
+\subsection{Grundidee}
+
+Die Schreibweise \rCode{O(f(n))} bedeutet, dass die Laufzeit eines Algorithmus höchstens proportional 
+zur Funktion \rCode{f(n)} wächst.  
+Wenn also ein Algorithmus in \rCode{O(n)} arbeitet, wächst seine Ausführungszeit linear mit der Eingabegröße.
+
+\begin{tcolorbox}[gray, title={Hinweis}]
+    Die Big-O-Notation gibt keine exakte Laufzeit an, sondern das \emph{Wachstumsverhalten}.  
+    Sie betrachtet nur den dominanten Term — also den Anteil, der für große \rCode{n} am stärksten wächst.
+\end{tcolorbox}
+
+\subsection{Häufige Komplexitätsklassen}
+
+\begin{itemize}
+    \item \rCode{$O(1)$} – konstante Zeit (unabhängig von der Eingabegröße)
+    \item \rCode{$O(\log n)$} – logarithmisch (z.\,B. binäre Suche)
+    \item \rCode{$O(n)$} – linear (z.\,B. Schleife über ein Array)
+    \item \rCode{$O(n \log n)$} – n-log-n (z.\,B. effiziente Sortierverfahren)
+    \item \rCode{$O(n^2)$} – quadratisch (z.\,B. doppelt geschachtelte Schleifen)
+    \item \rCode{$O(2^n)$} – exponentiell (z.\,B. vollständige Kombinationssuche)
+    \item \rCode{$O(n!)$} – fakultativ (z.\,B. Permutationsprobleme)
+\end{itemize}
+
+\subsection{Beispiele in C++}
+
+\begin{tcolorbox}[blue, title={Beispiel 1 — konstante Komplexität \rCode{O(1)}}]
+    Diese Operation benötigt immer die gleiche Zeit, unabhängig von der Eingabegröße.
+\end{tcolorbox}
+
+\begin{cpp}
+int getFirstElement(const std::vector<int> &v) {
+    return v[0]; // immer eine Operation
+}
+\end{cpp}
+
+\begin{tcolorbox}[blue, title={Beispiel 2 — logarithmische Komplexität \rCode{$O(\log n)$}}]
+    Die binäre Suche halbiert in jedem Schritt den Suchbereich.
+\end{tcolorbox}
+
+\begin{cpp}
+int binarySearch(const std::vector<int> &v, int target) {
+    int left = 0, right = v.size() - 1;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (v[mid] == target) return mid;
+        else if (v[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}
+\end{cpp}
+
+\begin{tcolorbox}[blue, title={Beispiel 3 — lineare Komplexität \rCode{O(n)}}]
+    Eine Schleife, die alle Elemente durchläuft, wächst linear mit der Eingabegröße.
+\end{tcolorbox}
+
+\begin{cpp}
+int sumElements(const std::vector<int> &v) {
+    int sum = 0;
+    for (int x : v) sum += x;
+    return sum;
+}
+\end{cpp}
+
+\begin{tcolorbox}[blue, title={Beispiel 4 — n·log(n) Komplexität \rCode{$O(n \log n)$}}]
+    Sortieralgorithmen wie \rCode{std::sort()} oder MergeSort erreichen diese Effizienzklasse.
+\end{tcolorbox}
+
+\begin{cpp}
+void sortVector(std::vector<int> &v) {
+    std::sort(v.begin(), v.end()); // O(n log n)
+}
+\end{cpp}
+
+\begin{tcolorbox}[blue, title={Beispiel 5 — quadratische Komplexität \rCode{$O(n^2)$}}]
+    Doppelte Schleifen über alle Elemente – z.B. einfacher Sortieralgorithmus.
+\end{tcolorbox}
+
+\begin{cpp}
+void bubbleSort(std::vector<int> &v) {
+    for (size_t i = 0; i < v.size(); ++i)
+        for (size_t j = 0; j < v.size() - 1; ++j)
+            if (v[j] > v[j+1])
+                std::swap(v[j], v[j+1]);
+}
+\end{cpp}
+
+\begin{tcolorbox}[blue, title={Beispiel 6 — exponentielle Komplexität \rCode{$O(2^n)$}}]
+    Eine rekursive Funktion, die alle Kombinationen prüft (z.\,B. Fibonacci ohne Memoization).
+\end{tcolorbox}
+
+\begin{cpp}
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2); // O(2^n)
+}
+\end{cpp}
+
+\begin{tcolorbox}[blue, title={Beispiel 7 — Fakultätskomplexität \rCode{$O(n!)$}}]
+    Generierung aller Permutationen einer Liste — extrem ineffizient bei großen n.
+\end{tcolorbox}
+
+\begin{cpp}
+void permute(std::string s, int l, int r) {
+    if (l == r) std::cout << s << std::endl;
+    else {
+        for (int i = l; i <= r; ++i) {
+            std::swap(s[l], s[i]);
+            permute(s, l + 1, r);
+            std::swap(s[l], s[i]);
+        }
+    }
+}
+\end{cpp}
+
+\subsection{Wachstumsvergleich der Funktionen}
+
+Für große \rCode{n} spielen konstante Faktoren keine Rolle mehr.  
+Entscheidend ist, wie schnell die jeweilige Funktion wächst:
+
+\begin{center}
+    \rCode{$O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n) < O(n!)$}
+\end{center}
+
+\begin{tcolorbox}[red, title={Fazit}]
+    In der Praxis sollten Algorithmen mit möglichst geringer Komplexität bevorzugt werden – 
+    idealerweise \rCode{$O(1)$}, \rCode{$O(\log n)$} oder \rCode{$O(n)$}.  
+    Höhere Komplexitäten führen sehr schnell zu ineffizientem Verhalten bei großen Datenmengen.
+\end{tcolorbox}

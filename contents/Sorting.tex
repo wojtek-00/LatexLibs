@@ -1,0 +1,162 @@
+% filename.....
+% !TeX root = ../main.tex
+%%%%%
+
+\section{Sorting}
+\begin{tcolorbox}[gray, title={\rCode{compareTo(T o)}}]
+
+    Słuy do porównywania obiektór tego samego typu. Zwraca:
+    \begin{itemize}
+        \item liczbę ujemną jesli \rCode{this < other}
+        \item \rCode{0} jesli \rCode{this == other}
+        \item liczbę dodatnią jesli \rCode{this > other}
+    \end{itemize}
+    Działa wewnątrz klasy i pochodzi z \rCode{Comparable}.
+
+   \begin{java}
+        public class Student implements Comparable<Student> {
+        private String name;
+        private int age;
+
+        public Student(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public int compareTo(Student other) {
+            return Integer.compare(this.age, other.age);
+        }
+
+        @Override
+        public String toString() {
+            return name + " (" + age + ")";
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            List<Student> students = Arrays.asList(
+                new Student("Anna", 22),
+                new Student("Kuba", 20),
+                new Student("Ola", 25)
+            );
+
+            Collections.sort(students); // uses compareTo()
+            System.out.println(students);
+        }
+    }
+
+    \end{java}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[gray, title={\rCode{comparator(T o)}}]
+    Świetne pytanie — Comparator robi to samo co Comparable, czyli porównuje obiekty, ale działa z zewnątrz, a nie wewnątrz klasy.
+    \begin{table}[H]
+        \centering
+        \small
+        \begin{tabularx}{0.95\textwidth}{|X|X|X|}
+            \hline
+            \textbf{Cecha} & \textbf{Comparable} & \textbf{Comparator} \\
+            \hline
+            Gdzie się definiuje & w klasie obiektu \rCode{implements Comparable} & w osobnej klasie lub lambdzie \\
+            \hline
+            Liczba moliwych porównań & Tylko jedno & dowolna liczba \\
+            \hline
+            Metoda & \rCode{compareTo(T other)} & \rCode{compare(T o1, T o2)} \\
+            \hline
+        \end{tabularx}
+    \end{table}
+
+    \pheading{Przykład}
+    Załóżmy, że klasa \rCode{Student} nie implementuje \rCode{Comparable}:
+    \begin{java}
+        public class Student {
+            String name;
+            int age;
+
+            public Student(String name, int age) {
+                this.name = name;
+                this.age = age;
+            }
+
+            @Override
+            public String toString() {
+                return name + " (" + age + ")";
+            }
+        }
+    \end{java}
+
+    Teraz tworzymy Comparator:
+    \begin{java}
+        import java.util.*;
+
+        public class Main {
+            public static void main(String[] args) {
+                List<Student> students = Arrays.asList(
+                    new Student("Anna", 22),
+                    new Student("Kuba", 20),
+                    new Student("Ola", 25)
+                );
+
+                // Comparator po wieku
+                Comparator<Student> byAge = (s1, s2) -> Integer.compare(s1.age, s2.age);
+                Collections.sort(students, byAge);
+
+                System.out.println(students);
+            }
+        }
+    \end{java}
+
+    Wynik to: \rCode{[Kuba (20), Anna (22), Ola (25)]
+}
+
+\end{tcolorbox}
+
+
+
+\begin{tcolorbox}[red, title={Porównywanie obiektów w~Java: \rCode{==} vs \rCode{equals()}}]
+
+    \begin{itemize}
+    \item \rCode{==}~– porównuje \textbf{referencje obiektów}, czyli sprawdza, 
+    czy dwie zmienne wskazują na \emph{ten sam obiekt w pamięci}.
+    \[
+        a == b \;\Rightarrow\; \text{czy } a \text{ i } b \text{ to ten sam obiekt?}
+    \]
+
+    \item \rCode{equals()}~– porównuje \textbf{zawartość obiektów}, 
+    czyli sprawdza, czy dane przechowywane w obiektach są takie same.
+    \[
+        a.equals(b) \;\Rightarrow\; \text{czy } a \text{ i } b \text{ mają te same dane?}
+    \]
+
+    \item Domyślna implementacja \rCode{equals()} w~klasie \rCode{Object} działa 
+    tak samo jak \rCode{==}. Aby porównywać zawartość, należy ją \textbf{nadpisać}:
+    \end{itemize}
+
+    \begin{java}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student s = (Student) o;
+        return name.equals(s.name);
+    }
+    \end{java}
+
+    \noindent
+    \textbf{Podsumowanie:}
+
+    \begin{center}
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Operator} & \textbf{Porównuje} & \textbf{Użycie} \\
+    \hline
+    \rCode{==} & Referencję (adres pamięci) & Tożsamość obiektu \\
+    \rCode{equals()} & Zawartość (dane) & Równość logiczna \\
+    \hline
+    \end{tabular}
+    \end{center}
+
+\end{tcolorbox}
