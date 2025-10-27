@@ -1,0 +1,65 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wojciech Zarzycki $
+% $Datum: 2020-09-17 12:27:00Z $
+% !TEX root = ../LatexTutorial.tex
+% $Version: 1 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tcolorbox}[red,title={Hinweis}]
+Środowisko figure to tzw. float - czyli obiekt pływający. Dzięki temu wszystkie grafiki są sformatowane zgodnie z normą, kada figura dostaje swój numer i poźniej jest prezentowana w liście rysunków.
+\end{tcolorbox}
+
+
+\section{Add Image}
+\begin{lstlisting}
+\begin{figure}[H] % oder [htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{path}
+    \caption{title}
+    \label{fig:label}
+\end{figure}
+
+\end{lstlisting}
+
+\section{Image and Tikz}
+\begin{lstlisting}
+\begin{figure}[H] % oder [htbp], je nach Platzierungswunsch
+  \centering
+  \begin{tikzpicture}
+    % obrazek jako tlo
+    \node[anchor=south west, inner sep=0] (image) at (0,0) {%
+      \includegraphics[width=0.7\linewidth]{path}};
+        
+    \begin{scope}[x={(image.south east)}, y={(image.north west)}]
+      \draw[red, line width=4pt, <-, >=angle 60] (0.37,0.755) -- ++(0.2,-0.1);
+        
+      % lib_deps
+      \draw[red, line width=2pt] (0.06,0.52) rectangle ++(0.5, 0.08);
+        
+      % #include <XXXX.h>
+      \draw[red, line width=2pt] (0.06,0.32) rectangle ++(0.35, 0.08);
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Title}
+  \label{fig:label}
+\end{figure}
+\end{lstlisting}
+
+\begin{tcolorbox}[blue,title={Hinweis}]
+Argument opcjonalny [htbp] (here, top, bottom, page) pozwala LaTeXowi decydować, gdzie najlepiej umieścić rysunek, aby układ był estetyczny:
+    \begin{itemize}
+        \setlength\topsep{0em}      
+        \setlength\itemsep{0.2em}   % odstęp między punktami
+        \setlength\parskip{0pt}     % odstęp między akapitami
+        \setlength\parsep{0pt}
+        
+        \item \texttt{[h]} → ,,here'' - jak najbliżej miejsca w kodzie
+        \item \texttt{[t]} → ,,top'' - na górze strony
+        \item \texttt{[b]} → ,,bottom'' - na dole strony
+        \item \texttt{[p]} → osobna strona tylko z rysunkami
+    \end{itemize}
+Zwykle używa się \texttt{[htbp]}, a dla wymuszenia \texttt{[H]} (wymaga \texttt{\textbackslash usepackage\{float\}}).
+
+\end{tcolorbox}
