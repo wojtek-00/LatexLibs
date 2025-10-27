@@ -128,15 +128,173 @@ void permute(std::string s, int l, int r) {
 
 \subsection{Wachstumsvergleich der Funktionen}
 
-Für große \rCode{n} spielen konstante Faktoren keine Rolle mehr.  
-Entscheidend ist, wie schnell die jeweilige Funktion wächst:
+    Für große \rCode{n} spielen konstante Faktoren keine Rolle mehr.  
+    Entscheidend ist, wie schnell die jeweilige Funktion wächst:
 
-\begin{center}
-    \rCode{$O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n) < O(n!)$}
-\end{center}
+    \begin{center}
+        \rCode{$O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n) < O(n!)$}
+    \end{center}
 
-\begin{tcolorbox}[red, title={Fazit}]
-    In der Praxis sollten Algorithmen mit möglichst geringer Komplexität bevorzugt werden – 
-    idealerweise \rCode{$O(1)$}, \rCode{$O(\log n)$} oder \rCode{$O(n)$}.  
-    Höhere Komplexitäten führen sehr schnell zu ineffizientem Verhalten bei großen Datenmengen.
+    \begin{tcolorbox}[red, title={Fazit}]
+        In der Praxis sollten Algorithmen mit möglichst geringer Komplexität bevorzugt werden – 
+        idealerweise \rCode{$O(1)$}, \rCode{$O(\log n)$} oder \rCode{$O(n)$}.  
+        Höhere Komplexitäten führen sehr schnell zu ineffizientem Verhalten bei großen Datenmengen.
+    \end{tcolorbox}
+
+\section{Mastertheorem}
+    Chodzi o porównanie szybkości wzrostu dwóch składników w równaniu rekurencyjnym. Jest to analiza dominacji w której sprawdzam, co bardziej wpływa na czas działania algorytmu. Pozwala to określic całkowity koszt $T(n)$, czyli króry składnik - rekurencja czy lokalna praca - dominuje.
+\begin{tcolorbox}[blue = {Allgemeine Teilen und Herrschen}]
+    Folgende Gleichung heißt \textbf{Rekursive Gleichung}, weil $T$ wieder durch $T$ definiert wird (aber mit anderen Parametern).
+    \[
+        T(n) = a \cdot T(\frac{n}{b}) + f(n)
+    \]
+
+    \begin{itemize}[noitemsep, topsep=0pt]
+        \item $T(n) \rightarrow$ Gesamtlauf bei Eingabelänge na
+        \item $a \rightarrow$ Anzahl der ,,Untergegebenen'', $a \geq 1$
+        \item $b \rightarrow$ Anteil der Eingabe pro Untergegebenem, $b > 1$
+        \item $f(n) \rightarrow$ Zusatzaufwand bei Eingabelänge $n$
+    \end{itemize}
+
+    \vspace{1cm}
+    Die weiteren funktionieren durch Aufruf der $T(n)$ Funktion mit dem Argument $n = \frac{n}{b}$
+    \[
+        T(\frac{n}{b}) = a \cdot T(\frac{n}{b^2}) + f(\frac{n}{b})
+    \]
+    und so weiter
+
 \end{tcolorbox}
+
+\begin{tcolorbox}[red = {Hinweis}]
+    Die Untergebenen kriegen eine kurzere Aufgabe, somit sollen die nicht länger laufen als der Boss (weil die Angaben kürzer werden). Die untergebenen haben somit auf keinen Fall mehr zu tun als ihr Chef. Sie können aber insgesamt mehr oder weniger machen. Das ist die Frage: wie viel arbeiten die Untergeordneten im vergleich zu Chef.
+\end{tcolorbox}
+
+
+\subsection{Fälle}
+    \begin{tcolorbox}[blue = {Mastertheorem}]
+        Seien $a \geq 1, b > 1, f : \mathbb{N} \rightarrow \mathbb{N}$ und die Aufwandsfunktion $t(n)$ sei von der Form $t(n) = at(\frac{n}{b}) + f(n)$. Dann gilt (mit $c = \log_b a$ un $\epsilon > 0$)
+    \end{tcolorbox}
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{Fall} & \textbf{Warunek} & \textbf{Co dominuje} & \textbf{wynik} \\
+            \hline
+            1 & $f(n) \in O(n^{c - \epsilon})$ & rekurencja rośnie szybciej & $T(n) \in \Theta(n^c)$ \\
+            2 & $f(n) \in \Theta (n^c)$ & obie części rosną tak samo & $T(n) \in \Theta (n^c \log n)$ \\
+            3 & $f(n) \in \Omega(n^{c + \epsilon})$ i $af(\frac{n}{b}) \leq c \cdot f(n)$ & praca nierekurencyjna dominuje & $T(n) \in \Theta(f(n))$ \\
+            \hline
+        \end{tabular}
+    \end{table}
+    \pheading{Objaśnienie:}
+    \begin{description}
+        \item[Fall 1] - rekurencja ,,zjada'' większość czasu - podproblemów jest duo a lokalna praca ma mały wpływ.
+        \item[Fall 2] - równowaga: praca w kadej warstwie kosztuje tyle samo czasu, więc sumuje się w dodatkowy $\log n$
+        \item[Fall 3] - praca lokalna (np. scalanie, przetwarzanie) dominuje i decysuje o czasie działania 
+    \end{description}
+
+
+\subsubsection{Fall 1}
+    \begin{tcolorbox}[blue = {Definition}]
+        Falls $f(n) \in O(n^{c - \epsilon})$, dann ist $T(n) \in \Theta(n^{c})$.
+    \end{tcolorbox}
+
+        Für das Rekursionsschema 
+        \[
+        T(n) = aT\!\left(\frac{n}{b}\right) + f(n)
+        \]
+        sei $c = \log_b a$. 
+        Fall~1 gilt, wenn $f(n)$ langsamer wächst als $n^c$, also
+        \[
+        f(n) \in O(n^{c - \epsilon}) \quad \text{für ein } \epsilon > 0.
+        \]
+        Im Beispiel 
+        \[
+        T(n) = 9T\!\left(\frac{n}{3}\right) + n
+        \]
+        ist $a = 9$, $b = 3$, $c = \log_3 9 = 2$ und $f(n) = n$. 
+        Da $n = O(n^{2 - \epsilon})$ für jedes $\epsilon < 1$, 
+        folgt nach dem Master-Theorem:
+        \[
+        T(n) \in \Theta(n^2).
+        \]
+
+    \begin{tcolorbox}[red = {Podsumowanie}]
+        Wystarczy pokazać, że dla pewnego małego dodatniego $\epsilon$ (w praktyce: że $f(n)$ ma mniejszy wykładnik ni $n^c$) zachodzi 
+        \[
+        f(n) = O(n^{c - \epsilon})
+        \]
+    \end{tcolorbox}
+
+\subsubsection{Fall 2}
+    \begin{tcolorbox}[blue = {Definition}]
+        Falls $f(n) \in O(n^{c})$, dann ist $T(n) \in \Theta(n^{c}\log n)$.
+    \end{tcolorbox}
+
+    Im Beispiel:
+    \[
+    T(n) = T\!\left(\frac{2n}{3}\right) + 1
+    \]
+    ist $a = 1$, $b = \tfrac{3}{2}$ und $f(n) = 1$.
+    \[
+    n^c = n^{\log_b a} = n^{\log_{3/2} 1} = n^0 = 1
+    \]
+    Daher gilt:
+    \[
+    f(n) = 1 = \Theta(1)
+    \]
+    und somit nach dem Master-Theorem:
+    \[
+    T(n) \in \Theta(\log n)
+    \]
+
+    \begin{tcolorbox}[red = {Podsumowanie}]
+    W przypadku~2 funkcja $f(n)$ rośnie w tym samym tempie co $n^c$,  
+    czyli $f(n) \in \Theta(n^c)$.  
+    Wtedy całkowity czas wykonania zwiększa się o czynnik $\log n$:
+    \[
+    T(n) \in \Theta(n^c \log n)
+    \]
+    \end{tcolorbox}
+
+\subsubsection{Fall 3}
+    \begin{tcolorbox}[blue = {Definition}]
+        Falls $f(n) \in \Omega(n^{c + \epsilon})$ und $af(\frac{n}{b}) \leq cf(n)$, dann ist $T(n) \in \Theta(f(n))$.
+    \end{tcolorbox}
+
+    Im Beispiel
+    \[
+    T(n) = 3T(\frac{n}{4}) + n \lg n
+    \]
+    ist $a = 3$, $b = 4$, $f(n) = n \lg n$, $\log_4 3 = 0.793$. \\[1em]
+    1. Kondition $f(n) \in \Omega(n^{c + \epsilon})$
+    \[
+    f(n) = n \lg n = \Omega(n^{0.793 + \epsilon}) \text{ mit } \epsilon > 0
+    \]
+    dla $\epsilon = 0.2$ $n^{c + \epsilon} \approx n^1$. $n \lg n$ rośnie szybciej niż $n^1$, więc 
+    \[
+        f(n) = n \lg n = \Omega(n^1)    
+    \]
+
+    2. Kontition $af(\frac{n}{b}) \leq cf(n)$
+    \[
+    3 \cdot \frac{n}{4} \lg \frac{n}{4} \leq c \cdot f(n)\; \forall n, c < 1
+    \]
+    mit $c = \frac{3}{4}$
+    \[
+    \frac{3}{4} n \cdot \lg \frac{n}{4} \leq c \cdot n \ln n \Rightarrow \frac{3}{4} n \cdot \log \frac{n}{4} \leq \frac{3}{4} n \ln n
+    \]
+
+    \begin{tcolorbox}[red = {Podsumowanie}]
+    W przypadku~3 funkcja $f(n)$ rośnie szybciej niż część rekurencyjna $n^c$,  
+    czyli $f(n) \in \Omega(n^{c + \epsilon})$ dla pewnego $\epsilon > 0$.  
+    Jeśli dodatkowo spełniony jest warunek regularności 
+    $a f\!\left(\frac{n}{b}\right) \leq c \cdot f(n)$ dla pewnego $c < 1$,  
+    to dominującym składnikiem jest $f(n)$ i całkowity czas wykonania wynosi:
+    \[
+    T(n) \in \Theta(f(n))
+    \]
+    \end{tcolorbox}
+
+
