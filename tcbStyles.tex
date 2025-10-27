@@ -1,0 +1,72 @@
+% !TeX root = ../main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 TCOLORBOX SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --------------------------------------------------
+% HOW TO USE:
+%
+% \begin{tcolorbox}[red, title={Hinweis}]
+%   Your text here...
+% \end{tcolorbox}
+%
+% Available styles: [red], [blue], [gray]
+% --------------------------------------------------
+
+\tcbset{
+	% ===== RED BOX =====
+	red/.style={
+		colback=red!5!white,          % light red background
+		colframe=red!75!black,        % darker red frame
+		fonttitle=\bfseries,          % bold title font
+		title={#1},                   % dynamic title placeholder
+		breakable
+	},
+	% ===== BLUE BOX =====
+	blue/.style={
+		colback=blue!5!white,         % light blue background
+		colframe=blue!75!black,       % darker blue frame
+		fonttitle=\bfseries,          % bold title font
+		title={#1},                   % dynamic title placeholder
+		breakable,
+	},
+	% ===== GRAY BOX =====
+	gray/.style={
+		colback=gray!5,               % light gray background
+		colframe=black,               % black frame
+		boxrule=0.5pt,                % frame thickness
+		arc=2mm,                      % rounded corners
+		left=4mm, right=4mm,          % inner horizontal padding
+		top=2mm, bottom=2mm,          % inner vertical padding
+		fonttitle=\bfseries,          % bold title font
+		title={#1},                   % dynamic title placeholder
+		breakable,
+	}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           INLINE CODE HIGHLIGHT SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --------------------------------------------------
+% Define colors for inline code background and text
+% --------------------------------------------------
+\definecolor{codeBg}{rgb}{0.976, 0.949, 0.956}     % soft background color
+\definecolor{codeColor}{rgb}{0.780, 0.145, 0.305}  % reddish text color
+
+% --------------------------------------------------
+% Define custom command: \rCode{<text>}
+% Purpose: inline code highlight with subtle background
+% --------------------------------------------------
+\newtcbox{\rCode}{
+	nobeforeafter,                            % no extra vertical spacing
+	fontupper=\ttfamily\color{codeColor},     % monospaced colored font
+	colframe=codeBg,                          % frame color same as background
+	colback=codeBg,                           % background color
+	boxrule=0.1pt,                            % thin frame line
+	arc=3pt,                                  % slightly rounded corners
+	boxsep=0pt,                               % minimal inner spacing
+	left=3pt, right=3pt,                      % horizontal padding
+	top=3pt, bottom=4pt,                      % vertical padding
+	tcbox raise base                          % align with text baseline
+}
