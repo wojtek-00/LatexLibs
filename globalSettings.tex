@@ -1,0 +1,49 @@
+% filename: globalSettings.tex
+% !TeX root = ../../main.tex
+% Author: Wojciech Zarzycki
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                GLOBAL SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --------------------------------------------------
+% Allow use of '@' in command names for internal macros
+% (needed for modifying counters and section formatting)
+% --------------------------------------------------
+\makeatletter
+
+    % --------------------------------------------------
+    % Reset the section counter every time a new chapter begins
+    % Example: sections will restart from 1 in each chapter
+    % --------------------------------------------------
+    \@addtoreset{section}{chapter}
+
+    % --------------------------------------------------
+    % Change section numbering to simple Arabic numerals (1, 2, 3…)
+    % instead of the default chapter.section (1.1, 1.2, etc.)
+    % --------------------------------------------------
+    \renewcommand{\thesection}{\arabic{section}}
+
+\makeatother
+
+% --------------------------------------------------
+% Define how deep numbering should go
+% 0 = chapters only
+% 1 = + sections
+% 2 = + subsections
+% 3 = + subsubsections
+% --------------------------------------------------
+\setcounter{secnumdepth}{3}
+
+% --------------------------------------------------
+% Define a custom paragraph heading command
+% Usage: \pheading{Your Title}
+% It creates a paragraph heading followed by a line break
+% --------------------------------------------------
+\newcommand{\pheading}[1]{%
+  \paragraph{#1}\mbox{}\\[0em]
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                END OF FILE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
