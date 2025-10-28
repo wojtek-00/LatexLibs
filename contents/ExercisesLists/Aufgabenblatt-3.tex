@@ -2,6 +2,7 @@
 % !TeX root = ../../main.tex
 %%%%%
 
+\newpage
 \section{Aufgabenblatt 3}
 
 \subsubsection{Geben Sie aus, wie viele Module in der Datenbank gespeichert sind.}
@@ -92,4 +93,90 @@
             AND modulzuordnung.semester IS NULL
             GROUP BY studiengang.name
             ORDER BY COUNT(*) desc
+    \end{sql}
+
+    \subsubsection{Geben Sie zu jedem Studiengang und jedem Zertifikat in dem jeweiligen Studiengang die Anzahl der zugehörigen Module aus, wobei die Studiengänge und Zertifikate alphabetisch sortiert sein sollen.}
+    \begin{sql}
+        SELECT studiengang.name, zertifikat.name, COUNT(*) moduleCnt
+            FROM studiengang, zertifikatzuordnung, zertifikat, zertifikatsmodul, modul
+            WHERE studiengang.sid = zertifikatzuordnung.sid 
+            AND zertifikatzuordnung.zid = zertifikat.zid
+            AND zertifikatsmodul.zid = zertifikat.zid
+            AND modul.mid = zertifikatsmodul.mid
+            GROUP BY studiengang.name, zertifikat.name
+            ORDER BY studiengang.name, zertifikat.name ASC
+    \end{sql}
+
+    \subsubsection{Geben Sie zu jedem Studiengang die Anzahl der Zertifikate aus, sofern der Studiengang mehr als drei Zertifikate hat.}
+    \begin{sql}
+        SELECT studiengang.name, count(*) zertifikatCnt
+            FROM studiengang, zertifikatzuordnung, zertifikat
+            WHERE studiengang.sid = zertifikatzuordnung.sid
+            AND zertifikatzuordnung.zid = zertifikat.zid
+            GROUP BY studiengang.name
+            HAVING COUNT(*) > 3
+    \end{sql}
+
+    \subsubsection{Geben Sie die Studiengänge absteigend nach den daran beteiligten, unterschiedlichen Lehrenden sortiert aus.}
+    \begin{sql}
+        -- WELCHER KORREKT???????
+
+        SELECT studiengang.name, count(distinct lehrende.pid) lehrendeCnt
+            FROM studiengang, modulzuordnung, veranstaltung, lehrende
+            WHERE studiengang.sid = modulzuordnung.sid
+            AND modulzuordnung.mid = veranstaltung.mid
+            AND veranstaltung.vid = lehrende.vid
+            GROUP BY studiengang.name
+            ORDER BY count(distinct lehrende.pid) DESC
+
+            -- oder
+        SELECT studiengang.name, COUNT(distinct person.pid) lehrendeCount
+            FROM person, modul, modulzuordnung, studiengang
+            WHERE studiengang.sid = modulzuordnung.sid
+            AND modulzuordnung.mid = modul.mid
+            AND modul.pid = person.pid
+            GROUP BY studiengang.name
+            ORDER BY COUNT(person.pid)
+    \end{sql}
+
+
+    \subsubsection{Geben Sie für alle Lehrenden aus, wie viele Veranstaltungen sie lehren.}
+    \begin{sql}
+        SELECT person.name, count(*) veranstaltungCnt
+            FROM person, lehrende, veranstaltung
+            WHERE person.pid = lehrende.pid
+            AND lehrende.vid = veranstaltung.vid
+            GROUP BY person.name
+    \end{sql}
+
+    \subsubsection{Geben Sie die Lehrbeauftragten aus, die nur genau eine Veranstaltung anbieten.}
+    \begin{sql}
+        SELECT person.name
+            FROM person, lehrende, veranstaltung
+            WHERE person.pid = lehrende.pid
+            AND lehrende.vid = veranstaltung.vid
+            AND lehrbeauftragter = true
+            GROUP BY person.name
+            HAVING COUNT(veranstaltung.mid) = 1
+    \end{sql}
+
+    \subsubsection{Geben Sie für jeden Studiengang die Semester (sofern ungleich NULL) aufsteigend sortiert mit der Summe der ECTS der enthaltenen Module an.}
+    \begin{sql}
+        SELECT studiengang.name, modulzuordnung.semester, SUM(modul.ects)
+            FROM studiengang, modulzuordnung, modul
+            WHERE studiengang.sid = modulzuordnung.sid
+            AND modulzuordnung.mid = modul.mid
+            AND modulzuordnung.semester IS NOT NULL
+            GROUP BY studiengang.name, modulzuordnung.semester
+            ORDER BY studiengang.name, modulzuordnung.semester
+
+            -- oder
+            
+            SELECT studiengang.name, modulzuordnung.semester, SUM(modul.ects)
+            FROM studiengang, modulzuordnung, modul
+            WHERE studiengang.sid = modulzuordnung.sid
+            AND modulzuordnung.mid = modul.mid
+            AND modulzuordnung.semester IS NOT NULL
+            GROUP BY studiengang.name, modulzuordnung.semester
+            ORDER BY SUM(modul.ects)
     \end{sql}
