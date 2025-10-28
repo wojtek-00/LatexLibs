@@ -314,3 +314,14 @@ fp-info-cache
 *.xml
 *.csv
 ~$LoRa_Plan.xlsx
+
+/.gradle/
+/.idea/
+/.vscode/
+/bin/
+/build/
+/libs/
+/bin/
+
+
+
