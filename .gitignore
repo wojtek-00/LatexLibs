@@ -315,13 +315,11 @@ fp-info-cache
 *.csv
 ~$LoRa_Plan.xlsx
 
-/.gradle/
+01_Java_Datenbanken/.gradle/
 /.idea/
 /.vscode/
 /bin/
+01_Java_Datenbanken/bin/
 /build/
-/libs/
-/bin/
-
-
+01_Java_Datenbanken/build/
 
